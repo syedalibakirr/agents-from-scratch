@@ -1,0 +1,16 @@
+# Traces contain content from whatever repo you point the agent at — never commit them
+traces.jsonl
+*.jsonl
+
+# Secrets
+.env
+.env.*
+
+# Python
+__pycache__/
+*.pyc
+venv/
+.venv/
+
+# macOS
+.DS_Store
