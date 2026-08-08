@@ -8,6 +8,7 @@ The whole agent: a model, a loop, and three tools. No framework.
 |---|---|
 | `agent.py` | The whole agent — ~40 lines of loop, three tools, one trace log |
 | `read_trace.py` | Prints `traces.jsonl` as a readable step-by-step of what the agent decided |
+| `trace_summary.py` | One-screen scorecard of the run: every call and whether it was worth anything. Prints no file contents, so it's safe to share from a private repo |
 
 ## Run it
 
@@ -16,6 +17,7 @@ pip install anthropic
 export ANTHROPIC_API_KEY="your-key"
 python3 agent.py /path/to/some/repo "What does this project do?"
 python3 read_trace.py
+python3 trace_summary.py
 ```
 
 ## What an agent actually is
@@ -37,17 +39,21 @@ one question about the code. It answered correctly: full stack, both entry files
 
 But the trace was more interesting than the answer:
 
-- **11 tool calls** to answer one question. Six were searches; four came back empty or useless.
+- **11 tool calls** to answer one question. Six were searches — exactly **one** of them
+  found anything useful. Three returned `no matches`; two returned junk (a compiled
+  `.pyc` cache and a row from a data `.csv`).
 - It called `list_files` **twice**, getting the identical result the second time.
+- It read **zero source files**. Not one `.py`, not one `.tsx`.
 - It never worked the codebase out by reading code. One search surfaced a line inside
   `CLAUDE.md` — a doc I'd written for a different AI tool — so it read that instead.
   **The answer came from my own notes.**
 
 Two things I wasn't looking for: good documentation is now infrastructure for AI, not
-just humans. And the four dead searches were my fault — `search` reads file *contents*,
+just humans. And the dead searches were my fault — `search` reads file *contents*,
 never filenames, but my description of it just said "search the repo for a string."
+So the model kept searching for filenames, which by definition it could never find.
 
-Same model, same code. Four wasted calls because of one vague sentence I wrote.
+Same model, same code. Five of six searches wasted because of one vague sentence I wrote.
 
 ## Known bugs (fixed in later builds)
 
