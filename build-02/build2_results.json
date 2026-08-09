@@ -1,0 +1,58 @@
+[
+  {
+    "label": "baseline",
+    "calls": 11,
+    "searches": 4,
+    "useful": 3,
+    "reads": 5,
+    "errors": 0,
+    "secs": 23.7,
+    "answered": true,
+    "most_repeated": [
+      "read_file",
+      5
+    ]
+  },
+  {
+    "label": "no description",
+    "calls": 10,
+    "searches": 3,
+    "useful": 1,
+    "reads": 5,
+    "errors": 0,
+    "secs": 30.8,
+    "answered": false,
+    "most_repeated": [
+      "read_file",
+      5
+    ]
+  },
+  {
+    "label": "read_file errors",
+    "calls": 33,
+    "searches": 20,
+    "useful": 18,
+    "reads": 11,
+    "errors": 11,
+    "secs": 70.5,
+    "answered": true,
+    "most_repeated": [
+      "search",
+      20
+    ]
+  },
+  {
+    "label": "cheap model",
+    "calls": 8,
+    "searches": 1,
+    "useful": 1,
+    "reads": 6,
+    "errors": 1,
+    "secs": 13.4,
+    "answered": false,
+    "most_repeated": [
+      "read_file",
+      6
+    ]
+  }
+]
