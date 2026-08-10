@@ -22,6 +22,7 @@ covering what it adds and what broke along the way.
 | Build | What it adds | Code |
 |---|---|---|
 | 01 | The loop — a model, three tools, one trace log | [`build-01/`](./build-01) |
+| 02 | Breaking the loop on purpose — three failure modes | [`build-02/`](./build-02) |
 
 ## Notes
 
