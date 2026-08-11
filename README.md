@@ -23,6 +23,7 @@ covering what it adds and what broke along the way.
 |---|---|---|
 | 01 | The loop — a model, three tools, one trace log | [`build-01/`](./build-01) |
 | 02 | Breaking the loop on purpose — three failure modes | [`build-02/`](./build-02) |
+| 03 | 50 unused tools — does clutter degrade tool use? | [`build-03/`](./build-03) |
 
 ## Notes
 
