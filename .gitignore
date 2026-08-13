@@ -1,10 +1,13 @@
 # Traces contain content from whatever repo you point the agent at — never commit them
 traces.jsonl
 *.jsonl
+# ...except this one sample, kept to show the trace format
+!build-04/traces.jsonl
 
 # Secrets
 .env
 .env.*
+*.key
 
 # Python
 __pycache__/
