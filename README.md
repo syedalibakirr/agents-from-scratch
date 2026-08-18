@@ -25,6 +25,7 @@ covering what it adds and what broke along the way.
 | 02 | Breaking the loop on purpose — three failure modes | [`build-02/`](./build-02) |
 | 03 | 50 unused tools — does clutter degrade tool use? | [`build-03/`](./build-03) |
 | 04 | One sentence, three wordings — does rewording a tool description change behavior? | [`build-04/`](./build-04) |
+| 05 | 20 runs, one question — API default temperature vs. an explicit one, and what happens when the model rejects the parameter | [`build-05/`](./build-05) |
 
 ## Notes
 

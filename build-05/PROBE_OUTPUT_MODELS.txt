@@ -1,0 +1,17 @@
+/Users/syedalibakir/Desktop/build/build-05/temp_probe2.py:7: DeprecationWarning: The model 'claude-3-7-sonnet-latest' is deprecated and will reach end-of-life on February 19th, 2026.
+Please migrate to a newer model. Visit https://docs.anthropic.com/en/docs/resources/model-deprecations for more information.
+  c.messages.create(model=model, max_tokens=4,
+/Users/syedalibakir/Desktop/build/build-05/temp_probe2.py:7: DeprecationWarning: The model 'claude-3-5-haiku-latest' is deprecated and will reach end-of-life on February 19th, 2026.
+Please migrate to a newer model. Visit https://docs.anthropic.com/en/docs/resources/model-deprecations for more information.
+  c.messages.create(model=model, max_tokens=4,
+--- does any randomness lever survive on sonnet-5? ---
+[claude-sonnet-5] top_k=1                      REJECTED message': '`top_k` is deprecated for this model.'}, 're
+[claude-sonnet-5] top_k=5                      REJECTED message': '`top_k` is deprecated for this model.'}, 're
+[claude-sonnet-5] top_k=40                     REJECTED message': '`top_k` is deprecated for this model.'}, 're
+
+--- do older models still accept temperature=0? ---
+[claude-sonnet-4-5] temperature=0.0            ACCEPTED
+[claude-haiku-4-5] temperature=0.0             ACCEPTED
+[claude-3-7-sonnet-latest] temperature=0.0     MODEL NOT AVAILABLE
+[claude-3-5-sonnet-latest] temperature=0.0     MODEL NOT AVAILABLE
+[claude-3-5-haiku-latest] temperature=0.0      MODEL NOT AVAILABLE

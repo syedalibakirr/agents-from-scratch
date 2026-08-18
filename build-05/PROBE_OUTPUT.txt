@@ -1,0 +1,11 @@
+(no temperature)         ACCEPTED
+temperature=1.0          ACCEPTED
+temperature=0.999        REJECTED message': '`temperature` is deprecated for this model.'}, 'request_id'
+temperature=0.9          REJECTED message': '`temperature` is deprecated for this model.'}, 'request_id'
+temperature=0.7          REJECTED message': '`temperature` is deprecated for this model.'}, 'request_id'
+temperature=0.5          REJECTED message': '`temperature` is deprecated for this model.'}, 'request_id'
+temperature=0.3          REJECTED message': '`temperature` is deprecated for this model.'}, 'request_id'
+temperature=0.1          REJECTED message': '`temperature` is deprecated for this model.'}, 'request_id'
+temperature=0.0          REJECTED message': '`temperature` is deprecated for this model.'}, 'request_id'
+top_p=0.5                REJECTED message': '`top_p` is deprecated for this model.'}, 'request_id': 'req
+top_p=0.1                REJECTED message': '`top_p` is deprecated for this model.'}, 'request_id': 'req

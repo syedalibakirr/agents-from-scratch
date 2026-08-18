@@ -22,6 +22,9 @@ and the same question is asked 20 times per wording.
 - Target repo: a fixed external codebase (unrelated to this repo).
 - 20 runs per wording (condition B's first round of 10 had 1 crash, backfilled with
   a second round of 10 — see Limitations).
+- Temperature: every run in all three conditions used the API default (1.0),
+  identical across A, B, and C, because no `temperature` parameter was passed to
+  `client.messages.create()` anywhere in this build's `agent.py`.
 
 ## The three conditions
 
