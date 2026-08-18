@@ -1,7 +1,10 @@
 # Build 05 — 20 runs, one question, default temperature
 
 <p align="center">
-  <img src="./assets/build5_p45.png" alt="Terminal capture of the agent running Q1 against the target repo, showing tool calls and the final answer" width="450">
+  <img src="assets/build5_p45.png"
+       alt="Twenty runs of the same question: tool calls per run from 3 to 46,
+            and the three sampling controls that all return 400"
+       width="540">
 </p>
 
 Animated version: [`assets/build5_p45.gif`](./assets/build5_p45.gif)
