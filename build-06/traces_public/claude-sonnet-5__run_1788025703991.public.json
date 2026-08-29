@@ -1,0 +1,79 @@
+{
+  "model": "claude-sonnet-5",
+  "steps": [
+    {
+      "tool": "list_files",
+      "input": {}
+    },
+    {
+      "tool": "search",
+      "input": {
+        "query": "python-backend"
+      }
+    },
+    {
+      "tool": "list_files",
+      "input": {}
+    },
+    {
+      "tool": "search",
+      "input": {
+        "query": "python-backend/main.py"
+      }
+    },
+    {
+      "tool": "search",
+      "input": {
+        "query": "uvicorn"
+      }
+    },
+    {
+      "tool": "read_file",
+      "input": {
+        "path": "python-backend/app.py"
+      }
+    },
+    {
+      "tool": "read_file",
+      "input": {
+        "path": "python-backend/README.md"
+      }
+    },
+    {
+      "tool": "read_file",
+      "input": {
+        "path": "python-backend/README.md"
+      }
+    },
+    {
+      "tool": "read_file",
+      "input": {
+        "path": "python-backend/api/routes.py"
+      }
+    },
+    {
+      "tool": "read_file",
+      "input": {
+        "path": "python-backend/config.py"
+      }
+    },
+    {
+      "tool": "search",
+      "input": {
+        "query": "python-backend/services"
+      }
+    },
+    {
+      "tool": "read_file",
+      "input": {
+        "path": "python-backend/api/routes.py"
+      }
+    }
+  ],
+  "final_answer": "## What the `python-backend/` service does\n\nIt's a **Python FastAPI microservice** that provides the AI-powered features for the \"UniVerse\" platform (a college-application / essay-coaching product). Based on `python-backend/README.md`, `app.py`, `config.py`, and `api/routes.py`:\n\n- **Purpose**: It's the \"AI engine\" microservice alongside a React client and a Node/Express server, talking to the OpenAI (and optionally Anthropic/LiteLLM-routed) APIs and to a Supabase/Postgres database for persistence.\n- **Core features**:\n  - **Essay analysis**: full-essay feedback via a fine\u2011tuned GPT-3.5 model (`FINE_TUNED_MODEL_ID` in `config.py`), plus conversational Q&A follow-ups using `gpt-4o-mini`.\n  - **Intent classification**: routes incoming requests between \"full essay review\" and \"follow-up question\" flows (`services/intent_classifier.py`, `services/conversation.py`).\n  - **In-text selection queries**: lets a user ask about a specific highlighted snippet of their essay.\n  - **File upload support**: accepts `.txt`/`.docx` essay uploads (`utils/file_reader.py`, size/extension limits in `config.py`).\n  - **Activity tools**: polishing activity descriptions, generating \"heatmap\" and gap analyses, and ranking/prioritizing extracurricular activities (`services/activity_polisher.py`, `services/activity_analyzer.py`, `services/activity_ranking.py`).\n  - **Research chatbot**: a Q&A chatbot over research/college data with conversation summarization (`services/research_chatbot.py`).\n  - **RAG/embeddings**: an embedding pipeline for indexing counselor insights/college data for retrieval (`services/embedding_pipeline.py`), plus a `college_recommender` module (mentioned in `config.py`/docs) for ML-based college recommendations.\n- **API layer**: `api/routes.py` defines the actual FastAPI endpoints (essay analysis, activity tools, research chat, etc.), all mounted under the `/api` prefix.\n- **Config/infra**: `config.py` loads environment variables (OpenAI/Anthropic keys, model IDs, CORS origins, file-size limits), and `supabase_client.py` provides a Supabase client for storing conversations/messages and other data.\n\n## Entry point\n\nThe service starts from **`python-backend/app.py`**, which:\n- creates the `FastAPI` app,\n- configures CORS middleware,\n- mounts the API router from `api/routes.py` under the `/api` prefix, and\n- when run directly, launches it with `uvicorn.run(\"app:app\", host=\"0.0.0.0\", port=8000, reload=True)`.\n\nSo the server is started via `python app.py` (or `uvicorn app:app`), listening on port 8000.",
+  "counts": {
+    "tool_calls": 12,
+    "read_file_calls": 6,
+    "search_calls": 4
+  }
+}

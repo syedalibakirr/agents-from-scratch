@@ -1,0 +1,75 @@
+{
+  "model": "claude-opus-5",
+  "steps": [
+    {
+      "tool": "list_files",
+      "input": {}
+    },
+    {
+      "tool": "search",
+      "input": {
+        "query": "python-backend/"
+      }
+    },
+    {
+      "tool": "search",
+      "input": {
+        "query": "python-backend"
+      }
+    },
+    {
+      "tool": "search",
+      "input": {
+        "query": "from fastapi import"
+      }
+    },
+    {
+      "tool": "search",
+      "input": {
+        "query": "uvicorn"
+      }
+    },
+    {
+      "tool": "read_file",
+      "input": {
+        "path": "python-backend/app.py"
+      }
+    },
+    {
+      "tool": "read_file",
+      "input": {
+        "path": "python-backend/README.md"
+      }
+    },
+    {
+      "tool": "read_file",
+      "input": {
+        "path": "python-backend/api/routes.py"
+      }
+    },
+    {
+      "tool": "read_file",
+      "input": {
+        "path": "python-backend/config.py"
+      }
+    },
+    {
+      "tool": "search",
+      "input": {
+        "query": "@router."
+      }
+    },
+    {
+      "tool": "search",
+      "input": {
+        "query": "python-backend/services/"
+      }
+    }
+  ],
+  "final_answer": "## Answer\n\n**Startup file: `python-backend/app.py`**\n\nIt creates the FastAPI instance and, under `if __name__ == \"__main__\":`, runs `uvicorn.run(\"app:app\", host=\"0.0.0.0\", port=8000, reload=True)`. The README confirms the equivalent manual command: `uvicorn app:app --reload --host 0.0.0.0 --port 8000`.\n\n### What the backend does\n\nIt's a **Python FastAPI microservice** (\"AI Essay Coach Backend\", v1.0.0) that provides the AI/ML layer for a college-admissions platform called UniVerse. Per its own README, it sits alongside a React client and a Node/Express server in a monorepo, and talks to OpenAI and Supabase.\n\n`app.py` itself is thin: it builds the app, adds CORS middleware (origins from `config.py`), mounts `api/routes.py` under the `/api` prefix, and exposes a root `/` endpoint returning version/docs/health info.\n\n**Configuration** (`config.py`) loads a local `.env` and wires up multiple model providers:\n- `OPENAI_API_KEY` \u2014 optional; needed for essay analysis, not for the ML recommender\n- `ANTHROPIC_API_KEY` \u2014 optional; needed for marketplace counselor matching\n- A fine-tuned GPT-3.5 model (`ft:gpt-3.5-turbo-0125:pal-ai::CXCkJfDi`) for essay analysis\n- `gpt-4o-mini` for chat/intent classification\n- A LiteLLM-format research model (`RESEARCH_CHAT_MODEL_ID`, default `openai/gpt-4o`) so providers can be swapped without code changes\n- An embeddings model sized to `vector(1536)` for a RAG pipeline\n\n**Feature areas**, based on the routes registered in `api/routes.py`:\n\n| Area | Endpoints |\n|---|---|\n| Health | `GET /api/health` |\n| Essays | `POST /api/essay/analyze`, `POST /api/essay/upload` |\n| College recommendations | `POST /api/colleges/recommend`, `POST /api/colleges/recalculate-acceptance` |\n| Activities | `POST /api/activity/polish`, `/analyze`, `/rank` |\n| Student context & RAG | `GET /api/student/context`, `/counselor-insights`, plus `refresh-essay-embeddings`, `refresh-",
+  "counts": {
+    "tool_calls": 11,
+    "read_file_calls": 4,
+    "search_calls": 6
+  }
+}

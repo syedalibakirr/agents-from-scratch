@@ -1,0 +1,105 @@
+{
+  "model": "claude-opus-5",
+  "steps": [
+    {
+      "tool": "list_files",
+      "input": {}
+    },
+    {
+      "tool": "search",
+      "input": {
+        "query": "python-backend/"
+      }
+    },
+    {
+      "tool": "search",
+      "input": {
+        "query": "python-backend"
+      }
+    },
+    {
+      "tool": "read_file",
+      "input": {
+        "path": "python-backend/main.py"
+      }
+    },
+    {
+      "tool": "read_file",
+      "input": {
+        "path": "python-backend/README.md"
+      }
+    },
+    {
+      "tool": "read_file",
+      "input": {
+        "path": "python-backend/app.py"
+      }
+    },
+    {
+      "tool": "read_file",
+      "input": {
+        "path": "python-backend/config.py"
+      }
+    },
+    {
+      "tool": "read_file",
+      "input": {
+        "path": "python-backend/api/routes.py"
+      }
+    },
+    {
+      "tool": "search",
+      "input": {
+        "query": "@router.post(\"/"
+      }
+    },
+    {
+      "tool": "search",
+      "input": {
+        "query": "@router.get(\"/"
+      }
+    },
+    {
+      "tool": "search",
+      "input": {
+        "query": "uvicorn"
+      }
+    },
+    {
+      "tool": "read_file",
+      "input": {
+        "path": "python-backend/requirements.txt"
+      }
+    },
+    {
+      "tool": "read_file",
+      "input": {
+        "path": "python-backend/QUICKSTART.md"
+      }
+    },
+    {
+      "tool": "read_file",
+      "input": {
+        "path": "python-backend/services/conversation.py"
+      }
+    },
+    {
+      "tool": "read_file",
+      "input": {
+        "path": "python-backend/college_recommender/pipeline.py"
+      }
+    },
+    {
+      "tool": "read_file",
+      "input": {
+        "path": "python-backend/services/research_chatbot.py"
+      }
+    }
+  ],
+  "final_answer": "## What the backend is\n\n`python-backend/` is a **FastAPI microservice** (Python) that provides the AI/ML layer for the \"UniVerse\" college-application platform. Its own `README.md` describes it as the \"AI Essay Coach Backend (Python Microservice)\", sitting alongside a React client and a Node/Express server, and talking to OpenAI/Anthropic plus Supabase:\n\n```\nClient (React) \u2192 Python Backend (port 8000) \u2192 OpenAI API\n                        \u2193\n                     Supabase (conversations & messages)\n```\n\n### Main capabilities\n\n**1. AI essay coaching** (the original purpose)\n- `services/conversation.py` (`ConversationManager`) orchestrates the flow: it classifies intent (`services/intent_classifier.py`), then either runs a **full essay analysis** via a fine-tuned GPT-3.5 model (`services/essay_analyzer.py`, model `ft:gpt-3.5-turbo-0125:pal-ai::CXCkJfDi`) or a **conversational Q&A** turn via `gpt-4o-mini` (`services/chatbot.py`).\n- Supports in-text selection questions (\"what about *this* sentence?\"), student personalization (profile + activity context), conversation-history summarization and token-based pruning (`utils/summarizer.py`, `utils/token_counter.py`), and `.txt`/`.docx` uploads (`utils/file_reader.py`).\n\n**2. ML college recommender** (`college_recommender/`)\n- `pipeline.py` applies hard filters, preference scoring and academic-fit scoring (`scoring.py`), then buckets schools into **safe / target / ambitious** and returns the top N per bucket. It can pull pre-computed acceptance chances from the Supabase table `student_college_acceptance_chances`. Uses pandas/numpy/scikit-learn.\n\n**3. Research chatbot** (`services/research_chatbot.py`)\n- A general \"college admissions counselor\" assistant (routed through **LiteLLM**, default `openai/gpt-4o`, swappable via `RESEARCH_CHAT_MODEL_ID`) covering school selection, financial aid, testing, deadlines, recommendations and interviews \u2014 explicitly redirecting line-level essay critique back to the Essay Assistant.\n\n**4. Activities, dashboard, RAG and marketplace**\n- Activity polishing, heat-map/g",
+  "counts": {
+    "tool_calls": 16,
+    "read_file_calls": 10,
+    "search_calls": 5
+  }
+}

@@ -4,6 +4,10 @@ traces.jsonl
 # ...except this one sample, kept to show the trace format
 !build-04/traces.jsonl
 
+# Scrubbed traces: tool routes and answers only, no file contents
+!traces_public/
+!traces_public/*.public.json
+
 # Secrets
 .env
 .env.*

@@ -1,0 +1,69 @@
+{
+  "model": "claude-sonnet-5",
+  "steps": [
+    {
+      "tool": "list_files",
+      "input": {}
+    },
+    {
+      "tool": "search",
+      "input": {
+        "query": "python-backend/"
+      }
+    },
+    {
+      "tool": "search",
+      "input": {
+        "query": "python-backend/main.py"
+      }
+    },
+    {
+      "tool": "search",
+      "input": {
+        "query": "FastAPI("
+      }
+    },
+    {
+      "tool": "read_file",
+      "input": {
+        "path": "python-backend/app.py"
+      }
+    },
+    {
+      "tool": "read_file",
+      "input": {
+        "path": "python-backend/api/routes.py"
+      }
+    },
+    {
+      "tool": "read_file",
+      "input": {
+        "path": "python-backend/config.py"
+      }
+    },
+    {
+      "tool": "search",
+      "input": {
+        "query": "@router."
+      }
+    },
+    {
+      "tool": "search",
+      "input": {
+        "query": "python-backend/services/"
+      }
+    },
+    {
+      "tool": "read_file",
+      "input": {
+        "path": "python-backend/college_recommender/pipeline.py"
+      }
+    }
+  ],
+  "final_answer": "## Summary\n\n**Entry point:** `python-backend/app.py` \u2014 this is the FastAPI application's main module. It creates the `FastAPI` app instance, configures CORS, mounts the API router (from `api/routes.py`) under the `/api` prefix, and when run directly (`python app.py`) launches it via `uvicorn.run(\"app:app\", host=\"0.0.0.0\", port=8000, reload=True)`.\n\n**What the backend does:**\n\nThis is the **\"AI Essay Coach Backend\"** \u2014 a Python/FastAPI service that powers several AI-driven features for what appears to be a college-admissions platform (\"Pal AI\" / \"UniVerse\"). Based on `app.py`, `config.py`, `api/routes.py`, and the `services/`/`college_recommender/` modules, its main responsibilities are:\n\n1. **Essay coaching/analysis** (`services/essay_analyzer.py`, `services/conversation.py`, `services/intent_classifier.py`, `services/chatbot.py`)\n   - `POST /api/essay/analyze` \u2014 gives AI feedback on student essays (full review or specific Q&A), using a fine-tuned OpenAI model (`FINE_TUNED_MODEL_ID`) plus a base chat model for intent classification/conversation.\n   - `POST /api/essay/upload` \u2014 accepts essay file uploads and extracts text (`utils/file_reader.py`).\n\n2. **College recommendations** (`college_recommender/` package: `data_loading.py`, `scoring.py`, `pipeline.py`)\n   - `POST /api/colleges/recommend` \u2014 an ML-driven recommendation engine that loads a merged college dataset, applies hard filters, scores student preferences and academic fit, and splits results into \"safe / target / ambitious\" buckets. It can also pull pre-computed acceptance chances from Supabase (`student_college_acceptance_chances` table).\n   - `POST /api/colleges/recalculate-acceptance` \u2014 recomputes acceptance chances.\n\n3. **Extracurricular activity tools** (`services/activity_polisher.py`, `services/activity_analyzer.py`, `services/activity_ranking.py`)\n   - `/api/activity/polish`, `/api/activity/analyze`, `/api/activity/rank` \u2014 polish activity descriptions, generate heatmap/gap analysis, and prioritize activities.\n\n4. **Research chatbot for counselors** (`services/research_chatbot.py`, `services/embedding_pipeline.py`)\n   - `/api/research/ask`, `/api/counselor/research/messages`, `/api/counselor/research/history` \u2014 a chatbot (configurable via LiteLLM, e.g. GPT-4o or Claude) with summarization/history, backed by a RAG/embedding pipeline for indexing counselor insights and student activity/essay embeddings (`/api/student/refresh-essay-embeddings`, `/api/student/refresh-activity-embeddings`, `/api/student/counselor-insights`).\n\n5. **Student context & dashboard** (`/api/student/context`, `/api/",
+  "counts": {
+    "tool_calls": 10,
+    "read_file_calls": 4,
+    "search_calls": 5
+  }
+}

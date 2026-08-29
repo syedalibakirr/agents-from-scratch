@@ -1,0 +1,81 @@
+{
+  "model": "claude-opus-5",
+  "steps": [
+    {
+      "tool": "list_files",
+      "input": {}
+    },
+    {
+      "tool": "search",
+      "input": {
+        "query": "python-backend/"
+      }
+    },
+    {
+      "tool": "search",
+      "input": {
+        "query": "python-backend"
+      }
+    },
+    {
+      "tool": "read_file",
+      "input": {
+        "path": "python-backend/main.py"
+      }
+    },
+    {
+      "tool": "read_file",
+      "input": {
+        "path": "python-backend/api/routes.py"
+      }
+    },
+    {
+      "tool": "read_file",
+      "input": {
+        "path": "python-backend/app.py"
+      }
+    },
+    {
+      "tool": "read_file",
+      "input": {
+        "path": "python-backend/config.py"
+      }
+    },
+    {
+      "tool": "read_file",
+      "input": {
+        "path": "python-backend/README.md"
+      }
+    },
+    {
+      "tool": "search",
+      "input": {
+        "query": "@router."
+      }
+    },
+    {
+      "tool": "read_file",
+      "input": {
+        "path": "python-backend/services/conversation.py"
+      }
+    },
+    {
+      "tool": "read_file",
+      "input": {
+        "path": "python-backend/college_recommender/pipeline.py"
+      }
+    },
+    {
+      "tool": "read_file",
+      "input": {
+        "path": "python-backend/services/research_chatbot.py"
+      }
+    }
+  ],
+  "final_answer": "## What the `python-backend/` service does\n\nIt's a **Python FastAPI microservice** that provides the AI engine for a college-application platform (\"UniVerse\" / \"AI Essay Coach Backend\", v1.0.0). It sits between the React client and the AI providers (OpenAI / Anthropic via LiteLLM) plus Supabase for persistence.\n\n**Core capabilities**\n\n1. **Essay coaching** (`services/essay_analyzer.py`, `chatbot.py`, `conversation.py`, `intent_classifier.py`)\n   - Full essay review using a fine-tuned GPT-3.5 model (`ft:gpt-3.5-turbo-0125:pal-ai::CXCkJfDi`).\n   - Conversational follow-up Q&A on `gpt-4o-mini`, including \"in-text selection\" questions about a highlighted passage.\n   - Rule-based intent classification routing between full review and Q&A, plus turn summarization and token-budget history pruning (`utils/summarizer.py`, `utils/token_counter.py`).\n   - Returns quality signals (structure/voice/specificity scores, feedback keywords) and personalizes output with student profile + activity RAG chunks.\n   - File upload support for `.txt`/`.docx` essays (`utils/file_reader.py`).\n\n2. **College recommendation engine** (`college_recommender/`)\n   - `pipeline.recommend_colleges` applies hard filters, preference scoring, and academic-fit scoring, then buckets results into **safe / target / ambitious** (top N per bucket). It also pulls pre-computed per-student acceptance chances from the Supabase table `student_college_acceptance_chances`.\n\n3. **Activity tools** (`services/activity_polisher.py`, `activity_analyzer.py`, `activity_ranking.py`)\n   - Polishing activity descriptions, generating heatmap and gap analyses, and prioritizing/ranking activities.\n\n4. **Research chatbot** (`services/research_chatbot.py`)\n   - A general admissions counselor assistant (model configurable via `RESEARCH_CHAT_MODEL_ID`, default `openai/gpt-4o`) covering college selection, financial aid, testing, deadlines, recommendations, and interviews \u2014 explicitly deferring line-level essay critique to the Essay Assistant.\n\n5. **RAG / embeddings** (`services/embedding_pipeline.py`)\n   - Indexes counselor insights and refreshes essay/activity embeddings into 1536-dimension pgvector tables (`college_embeddings`, `student_activity_embeddings`).\n\n**API surface** \u2014 all routes mounted under the `/api` prefix, with a root `/` info endpoint and Swagger docs at `/docs`:\n`/api/health`, `/api/essay/analyze`, `/api/essay/upload`, `/api/colleges/recommend`, `/api/colleges/recalculate-acceptance`, `/api/activity/polish`, `/api/activity/analyze`, `/api/activity/",
+  "counts": {
+    "tool_calls": 12,
+    "read_file_calls": 8,
+    "search_calls": 3
+  }
+}

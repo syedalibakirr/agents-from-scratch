@@ -1,0 +1,49 @@
+{
+  "model": "claude-sonnet-5",
+  "steps": [
+    {
+      "tool": "list_files",
+      "input": {}
+    },
+    {
+      "tool": "search",
+      "input": {
+        "query": "python-backend"
+      }
+    },
+    {
+      "tool": "list_files",
+      "input": {}
+    },
+    {
+      "tool": "search",
+      "input": {
+        "query": "python-backend/main.py"
+      }
+    },
+    {
+      "tool": "search",
+      "input": {
+        "query": "uvicorn"
+      }
+    },
+    {
+      "tool": "read_file",
+      "input": {
+        "path": "python-backend/app.py"
+      }
+    },
+    {
+      "tool": "read_file",
+      "input": {
+        "path": "python-backend/README.md"
+      }
+    }
+  ],
+  "final_answer": "Based on the files under `python-backend/`, here's what this backend does:\n\n## What it is\n\n`python-backend/` is a **Python FastAPI microservice** called the **\"AI Essay Coach Backend\"**. It's one component of a larger monorepo (alongside a React client, a Node.js server, and a database layer), and its job is to provide AI-powered college essay coaching and college recommendation features, communicating with the OpenAI API and Supabase.\n\n## What it does\n\nAccording to the README and `app.py`, its core responsibilities are:\n\n- **Full essay analysis** \u2014 comprehensive feedback generation using a fine-tuned GPT-3.5 model (`services/essay_analyzer.py`)\n- **Conversational Q&A** \u2014 follow-up questions about an essay using GPT-4o-mini with conversation history (`services/chatbot.py`)\n- **In-text selection queries** \u2014 answering questions about specific selected text within an essay\n- **Intent classification** \u2014 routing incoming requests between full analysis and Q&A modes (`services/intent_classifier.py`)\n- **File upload support** \u2014 accepting `.txt` and `.docx` essay files\n- **Conversation management** \u2014 orchestrating and pruning conversation history to stay within token limits (`services/conversation.py`)\n- It also contains a **college recommender** module (`college_recommender/`, per other references like `data_loading.py`, `pipeline.py`) and a **research chatbot** service (`services/research_chatbot.py`), suggesting it also powers college search/recommendation and research Q&A features.\n- API endpoints are exposed under the `/api` prefix (e.g., `/api/health`, `/api/research/ask`) via `api/routes.py`, and configuration (CORS origins, keys, etc.) is managed in `config.py`.\n- Data is persisted to Supabase (conversations/messages), interfacing through `supabase_client.py`.\n\n## Startup file\n\nThe service is started from **`python-backend/app.py`**, which creates the FastAPI `app`, sets up CORS middleware, includes the API router, and (when run directly) launches it via `uvicorn.run(\"app:app\", host=\"0.0.0.0\", port=8000, reload=True)`.",
+  "counts": {
+    "tool_calls": 7,
+    "read_file_calls": 2,
+    "search_calls": 3
+  }
+}

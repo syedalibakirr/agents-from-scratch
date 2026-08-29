@@ -1,0 +1,67 @@
+{
+  "model": "claude-sonnet-5",
+  "steps": [
+    {
+      "tool": "list_files",
+      "input": {}
+    },
+    {
+      "tool": "search",
+      "input": {
+        "query": "python-backend"
+      }
+    },
+    {
+      "tool": "read_file",
+      "input": {
+        "path": "python-backend/main.py"
+      }
+    },
+    {
+      "tool": "list_files",
+      "input": {}
+    },
+    {
+      "tool": "read_file",
+      "input": {
+        "path": "python-backend/app.py"
+      }
+    },
+    {
+      "tool": "read_file",
+      "input": {
+        "path": "python-backend/config.py"
+      }
+    },
+    {
+      "tool": "read_file",
+      "input": {
+        "path": "python-backend/api/routes.py"
+      }
+    },
+    {
+      "tool": "search",
+      "input": {
+        "query": "services/"
+      }
+    },
+    {
+      "tool": "search",
+      "input": {
+        "query": "@router."
+      }
+    },
+    {
+      "tool": "read_file",
+      "input": {
+        "path": "python-backend/README.md"
+      }
+    }
+  ],
+  "final_answer": "I have enough information now to answer confidently.\n\n## What the `python-backend/` service does\n\nThis is the **AI Essay Coach Backend**, a Python **FastAPI microservice** that is one component of a larger \"UniVerse\" platform (which also includes a React client, a Node/Express server, and a Supabase/Postgres database \u2014 but per your instructions I only inspected files inside `python-backend/`).\n\nBased on `python-backend/README.md`, `python-backend/app.py`, `python-backend/config.py`, and `python-backend/api/routes.py`, the backend provides AI-powered features for college applicants, exposed as REST endpoints under the `/api` prefix:\n\n- **Essay coaching/analysis** (`/api/essay/analyze`, `/api/essay/upload`): Full essay review using a fine-tuned GPT-3.5 model, conversational follow-up Q&A via GPT-4o-mini, in-text selection queries, and intent classification to route between \"full review\" and \"question\" modes. Supports uploading `.txt`/`.docx` essay files.\n- **College recommendations** (`/api/colleges/recommend`, `/api/colleges/recalculate-acceptance`): An ML-based college recommender system.\n- **Activity tools** (`/api/activity/polish`, `/api/activity/analyze`, `/api/activity/rank`): Polishing extracurricular activity descriptions, generating \"heatmap\"/gap analysis, and ranking/prioritizing activities.\n- **Research chatbot** (`/api/research/ask`, plus counselor research message/history endpoints): A RAG-style chatbot that answers research questions, with conversation summarization and history management, backed by an embedding pipeline (`services/embedding_pipeline.py`) for indexing counselor insights and refreshing essay/activity/counselor-insight embeddings.\n- **Student context & dashboard** (`/api/student/context`, `/api/dashboard/summary`): Aggregates student profile/activity context and dashboard summary data (with a refresh endpoint).\n- **Health check** (`/api/health`).\n\nArchitecturally, it uses:\n- `config.py` to load environment variables (OpenAI/Anthropic API keys, model IDs like the fine-tuned essay model, `gpt-4o-mini`, and a configurable research-chat model via LiteLLM).\n- `supabase_client.py` to talk to the Supabase/Postgres database for storing conversations, embeddings, etc.\n- A `services/` package (conversation orchestration, essay analyzer, chatbot, intent classifier, activity polisher/analyzer/ranking, research chatbot, embedding pipeline) that implements the actual business logic, called from the routes.\n- CORS middleware so the frontend client can call it directly.\n\n## Entry point\n\nThe server is started from **`python-backend/main.py`**, which is the designated entry point (e.g., for Railway deployment). It simply imports and re-exports the `app` object:\n\n```python\nfrom app import app\n__all__ = [\"app\"]\n```\n\nThat `app` object (the actual FastAPI application, with routes/middleware config",
+  "counts": {
+    "tool_calls": 10,
+    "read_file_calls": 5,
+    "search_calls": 3
+  }
+}

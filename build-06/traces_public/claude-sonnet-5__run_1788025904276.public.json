@@ -1,0 +1,45 @@
+{
+  "model": "claude-sonnet-5",
+  "steps": [
+    {
+      "tool": "list_files",
+      "input": {}
+    },
+    {
+      "tool": "search",
+      "input": {
+        "query": "python-backend/"
+      }
+    },
+    {
+      "tool": "search",
+      "input": {
+        "query": "python-backend/main.py"
+      }
+    },
+    {
+      "tool": "search",
+      "input": {
+        "query": "uvicorn"
+      }
+    },
+    {
+      "tool": "read_file",
+      "input": {
+        "path": "python-backend/app.py"
+      }
+    },
+    {
+      "tool": "read_file",
+      "input": {
+        "path": "python-backend/README.md"
+      }
+    }
+  ],
+  "final_answer": "I explored `python-backend/` and found the following.\n\n## What this backend does\n\nThe `python-backend/` directory is a **Python FastAPI microservice** called the **\"AI Essay Coach Backend\"**, part of the larger UniVerse platform. It provides AI-powered college essay coaching functionality, sitting between the React client and the OpenAI API (and Supabase for persistence).\n\nKey responsibilities (from `README.md` and supporting modules):\n\n- **Full Essay Analysis**: Comprehensive feedback on essays using a fine-tuned GPT-3.5 model (`services/essay_analyzer.py`).\n- **Conversational Q&A**: Handles follow-up questions using GPT-4o-mini with conversation history (`services/chatbot.py`, `services/conversation.py`).\n- **In-Text Selection Queries**: Lets users ask questions about specific selected text within an essay.\n- **Intent Classification**: Automatically routes requests between full essay analysis and conversational Q&A (`services/intent_classifier.py`).\n- **File Upload Support**: Accepts `.txt` and `.docx` essay files.\n- **Token Management**: Prunes conversation history automatically to stay within model context limits.\n- Also appears to include a `college_recommender` module (per references in other docs) for college recommendation logic, and integrates with Supabase for storing conversations/messages.\n\nThe app exposes a REST API (built with FastAPI), configures CORS, mounts routes under `/api` (defined in `api/routes.py`), and exposes a root endpoint plus a health check (`/api/health`) and interactive docs at `/docs`.\n\n## Entry point\n\nThe backend is started from **`python-backend/app.py`**. This file creates the `FastAPI` app instance, sets up CORS middleware, includes the API router (`api/routes.py`) under the `/api` prefix, and\u2014when run directly\u2014launches the server via `uvicorn.run(\"app:app\", host=\"0.0.0.0\", port=8000, reload=True)`. It can also be started externally with `uvicorn app:app --reload --host 0.0.0.0 --port 8000`.",
+  "counts": {
+    "tool_calls": 6,
+    "read_file_calls": 2,
+    "search_calls": 3
+  }
+}

@@ -1,0 +1,105 @@
+{
+  "model": "claude-opus-5",
+  "steps": [
+    {
+      "tool": "list_files",
+      "input": {}
+    },
+    {
+      "tool": "search",
+      "input": {
+        "query": "python-backend/"
+      }
+    },
+    {
+      "tool": "search",
+      "input": {
+        "query": "python-backend"
+      }
+    },
+    {
+      "tool": "search",
+      "input": {
+        "query": "app = FastAPI"
+      }
+    },
+    {
+      "tool": "search",
+      "input": {
+        "query": "uvicorn"
+      }
+    },
+    {
+      "tool": "read_file",
+      "input": {
+        "path": "python-backend/app.py"
+      }
+    },
+    {
+      "tool": "read_file",
+      "input": {
+        "path": "python-backend/README.md"
+      }
+    },
+    {
+      "tool": "read_file",
+      "input": {
+        "path": "python-backend/config.py"
+      }
+    },
+    {
+      "tool": "read_file",
+      "input": {
+        "path": "python-backend/api/routes.py"
+      }
+    },
+    {
+      "tool": "search",
+      "input": {
+        "query": "@router."
+      }
+    },
+    {
+      "tool": "read_file",
+      "input": {
+        "path": "python-backend/QUICKSTART.md"
+      }
+    },
+    {
+      "tool": "read_file",
+      "input": {
+        "path": "python-backend/requirements.txt"
+      }
+    },
+    {
+      "tool": "search",
+      "input": {
+        "query": "python-backend/services/"
+      }
+    },
+    {
+      "tool": "search",
+      "input": {
+        "query": "marketplace"
+      }
+    },
+    {
+      "tool": "search",
+      "input": {
+        "query": "def recommend"
+      }
+    },
+    {
+      "tool": "read_file",
+      "input": {
+        "path": "python-backend/college_recommender/pipeline.py"
+      }
+    }
+  ],
+  "final_answer": "## What the `python-backend/` service is\n\nIt's a **Python FastAPI microservice** (the \"AI engine\") for a college\u2011admissions platform (UniVerse / Triptic). It sits alongside a React client and a Node/Express server, talks to **OpenAI / Anthropic (via `httpx` and LiteLLM)** for LLM work and to **Supabase/Postgres** for data and persistence.\n\n### Startup file\n**`python-backend/app.py`** \u2014 it creates the `FastAPI` app, configures CORS from `config.CORS_ORIGINS`, mounts `api/routes.py`'s router under the `/api` prefix, exposes a root `/` info endpoint, and under `if __name__ == \"__main__\":` runs `uvicorn.run(\"app:app\", host=\"0.0.0.0\", port=8000, reload=True)`. Per `QUICKSTART.md`, you start it with `python app.py` (or `uvicorn app:app --reload --port 8000`).\n\n### What it actually does (from `api/routes.py`, `config.py`, `README.md`)\n\n- **AI essay coaching** (the original purpose): `POST /api/essay/analyze` and `POST /api/essay/upload`. It supports full essay reviews via a **fine\u2011tuned GPT\u20113.5 model** (`FINE_TUNED_MODEL_ID`), conversational follow\u2011up Q&A with `gpt-4o-mini`, in\u2011text selection questions, rule\u2011based **intent classification** to route between review vs. Q&A, `.txt`/`.docx` upload parsing (`utils/file_reader.py`), and token/history pruning. Services live in `services/` (`intent_classifier.py`, `essay_analyzer.py`, `chatbot.py`, `conversation.py`).\n- **ML college recommender**: `POST /api/colleges/recommend`, backed by `college_recommender/` (`data_loading.py`, `scoring.py`, `pipeline.py`). `recommend_colleges()` applies hard filters, scores preferences, computes academic fit, optionally pulls pre\u2011computed acceptance chances from the Supabase `student_college_acceptance_chances` table, and returns top\u2011N **safe / target / ambitious** buckets. Related: `POST /api/colleges/recalculate-acceptance`.\n- **Extracurricular activity tools**: `POST /api/activity/polish` (rewrite descriptions), `/api/activity/analyze` (heatmap + gap analysis), `/api/activity/rank` (prioritization).\n- **Research chatbot + RAG**: `POST /api/research/ask` (`services/research_chatbot.py`, model configurable via `RESEARCH_CHAT_MODEL_ID` in LiteLLM `provider/model` form), plus counselor chat history endpoints (`GET /api/counselor/research/messages`, `DELETE /api/counselor/research/history`) and embedding-refresh endpoints (`/api/student/refresh-essay-embeddings`, `/refresh-activity-embeddings`, `/refresh-",
+  "counts": {
+    "tool_calls": 16,
+    "read_file_calls": 7,
+    "search_calls": 8
+  }
+}

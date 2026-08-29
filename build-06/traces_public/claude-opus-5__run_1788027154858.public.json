@@ -1,0 +1,105 @@
+{
+  "model": "claude-opus-5",
+  "steps": [
+    {
+      "tool": "list_files",
+      "input": {}
+    },
+    {
+      "tool": "search",
+      "input": {
+        "query": "python-backend/"
+      }
+    },
+    {
+      "tool": "search",
+      "input": {
+        "query": "python-backend"
+      }
+    },
+    {
+      "tool": "search",
+      "input": {
+        "query": "FastAPI"
+      }
+    },
+    {
+      "tool": "search",
+      "input": {
+        "query": "uvicorn"
+      }
+    },
+    {
+      "tool": "search",
+      "input": {
+        "query": "def "
+      }
+    },
+    {
+      "tool": "read_file",
+      "input": {
+        "path": "python-backend/README.md"
+      }
+    },
+    {
+      "tool": "read_file",
+      "input": {
+        "path": "python-backend/app.py"
+      }
+    },
+    {
+      "tool": "read_file",
+      "input": {
+        "path": "python-backend/main.py"
+      }
+    },
+    {
+      "tool": "read_file",
+      "input": {
+        "path": "python-backend/api/routes.py"
+      }
+    },
+    {
+      "tool": "read_file",
+      "input": {
+        "path": "python-backend/config.py"
+      }
+    },
+    {
+      "tool": "read_file",
+      "input": {
+        "path": "python-backend/start.sh"
+      }
+    },
+    {
+      "tool": "search",
+      "input": {
+        "query": "@router."
+      }
+    },
+    {
+      "tool": "read_file",
+      "input": {
+        "path": "python-backend/CHANGELOG.md"
+      }
+    },
+    {
+      "tool": "read_file",
+      "input": {
+        "path": "python-backend/college_recommender/pipeline.py"
+      }
+    },
+    {
+      "tool": "read_file",
+      "input": {
+        "path": "python-backend/requirements.txt"
+      }
+    }
+  ],
+  "final_answer": "## What `python-backend/` does\n\nIt's a **Python FastAPI microservice** that acts as the AI/ML engine for the \"UniVerse\" college-admissions platform. The React client and Node/Express server call it (default port 8000); it in turn calls LLM providers and Supabase.\n\n**Core capabilities** (all routes mounted under the `/api` prefix in `api/routes.py`):\n\n- **AI essay coaching** \u2014 the original purpose (per `README.md` / `CHANGELOG.md`). `POST /api/essay/analyze` does either a full essay review (via a fine-tuned GPT\u20113.5 model, `ft:gpt-3.5-turbo-0125:pal-ai::CXCkJfDi`) or conversational follow-up Q&A (`gpt-4o-mini`). A rule-based intent classifier routes between the two, and v2.0 added **in-text selection** \u2014 highlight part of an essay and ask about it, framed with `[START_SELECTION]...[END_SELECTION]` markers. `POST /api/essay/upload` accepts `.txt`/`.docx` files. Conversation history is summarized/pruned to stay within token limits.\n- **ML college recommender** \u2014 `POST /api/colleges/recommend`. `college_recommender/` loads a merged college dataset (from CSVs or Supabase), applies hard filters, scores preferences and academic fit with pandas/numpy/scikit-learn, and returns colleges bucketed into **safe / target / ambitious**. It can also pull pre-computed per-student acceptance chances from the `student_college_acceptance_chances` table. There's a related `POST /api/colleges/recalculate-acceptance`.\n- **Extracurricular activity tools** \u2014 `/api/activity/polish` (rewrite descriptions), `/api/activity/analyze` (heatmap + gap analysis), and `/api/activity/rank` (prioritization).\n- **Research chatbot + RAG** \u2014 `POST /api/research/ask`, backed by `services/research_chatbot.py` and `services/embedding_pipeline.py`. It uses **LiteLLM** so the model is swappable via the `RESEARCH_CHAT_MODEL_ID` env var (e.g. `openai/gpt-4o`, `anthropic/claude-sonnet-4-6`), and generates 1536-dim embeddings stored in `college_embeddings` / `student_activity_embeddings` tables. Supporting endpoints refresh essay, activity, and counselor-insight embeddings and manage counselor research chat history.\n- **Student context & dashboard** \u2014 `/api/student/context`, `/api/dashboard/summary` and a refresh variant.\n- **Infra** \u2014 CORS middleware configured from `config.CORS_ORIGINS`, a",
+  "counts": {
+    "tool_calls": 16,
+    "read_file_calls": 9,
+    "search_calls": 6
+  }
+}

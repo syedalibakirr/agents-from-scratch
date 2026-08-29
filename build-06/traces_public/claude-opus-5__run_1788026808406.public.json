@@ -1,0 +1,87 @@
+{
+  "model": "claude-opus-5",
+  "steps": [
+    {
+      "tool": "list_files",
+      "input": {}
+    },
+    {
+      "tool": "search",
+      "input": {
+        "query": "python-backend/"
+      }
+    },
+    {
+      "tool": "search",
+      "input": {
+        "query": "python-backend"
+      }
+    },
+    {
+      "tool": "read_file",
+      "input": {
+        "path": "python-backend/main.py"
+      }
+    },
+    {
+      "tool": "read_file",
+      "input": {
+        "path": "python-backend/api/routes.py"
+      }
+    },
+    {
+      "tool": "read_file",
+      "input": {
+        "path": "python-backend/app.py"
+      }
+    },
+    {
+      "tool": "read_file",
+      "input": {
+        "path": "python-backend/config.py"
+      }
+    },
+    {
+      "tool": "read_file",
+      "input": {
+        "path": "python-backend/README.md"
+      }
+    },
+    {
+      "tool": "search",
+      "input": {
+        "query": "@router."
+      }
+    },
+    {
+      "tool": "read_file",
+      "input": {
+        "path": "python-backend/services/conversation.py"
+      }
+    },
+    {
+      "tool": "read_file",
+      "input": {
+        "path": "python-backend/Procfile"
+      }
+    },
+    {
+      "tool": "read_file",
+      "input": {
+        "path": "python-backend/services/research_chatbot.py"
+      }
+    },
+    {
+      "tool": "read_file",
+      "input": {
+        "path": "python-backend/college_recommender/pipeline.py"
+      }
+    }
+  ],
+  "final_answer": "# What the `python-backend/` service does\n\nIt's a **Python FastAPI microservice** \u2014 the \"AI engine\" of a larger college-application platform called **UniVerse** (a monorepo that also has a React client, a Node/Express server, and a Supabase/Postgres database). This service handles the AI/ML work and talks to OpenAI/Anthropic (via LiteLLM) and Supabase.\n\n## Core capabilities\n\n**1. AI essay coaching** (its original purpose, per `README.md`)\n- `POST /api/essay/analyze` \u2014 full essay review via a **fine-tuned GPT-3.5 model** (`ft:gpt-3.5-turbo-0125:pal-ai::CXCkJfDi`), plus conversational follow-up Q&A on `gpt-4o-mini`.\n- Supports **in-text selection queries** (ask about a highlighted passage), **intent classification** to route between full-review and Q&A, and **conversation-history pruning/summarization** to stay under token limits (`services/conversation.py`, `intent_classifier.py`, `essay_analyzer.py`, `chatbot.py`, `utils/summarizer.py`, `utils/token_counter.py`).\n- Full reviews also return quality scores (structure, voice, specificity).\n- `POST /api/essay/upload` \u2014 accepts `.txt`/`.docx` uploads and extracts the essay text.\n\n**2. College recommendation engine** (`college_recommender/`, `POST /api/colleges/recommend`)\n- A pandas-based pipeline that applies hard filters, scores student preferences, computes academic fit, then buckets results into **safe / target / ambitious** and returns the top N of each.\n- Optionally merges in pre-computed per-student acceptance chances from the Supabase table `student_college_acceptance_chances`. There's also `POST /api/colleges/recalculate-acceptance`.\n\n**3. Extracurricular activity tooling**\n- `/api/activity/polish` (rewrite descriptions), `/api/activity/analyze` (heatmap + gap analysis), `/api/activity/rank` (prioritization).\n\n**4. Research chatbot** (`/api/research/ask`)\n- A general college-admissions counselor bot (`services/research_chatbot.py`) covering school selection, financial aid, testing, deadlines, recommendation letters, and interviews \u2014 deliberately scoped to *redirect* line-level essay-draft questions back to the Essay Assistant. Its model is swappable via LiteLLM (`RESEARCH_CHAT_MODEL_ID`, default `openai/gpt-4o`). Related endpoints manage counselor research message history.\n\n**5. RAG / embeddings support**\n- `services/embedding_pipeline.py` plus endpoints to refresh essay, activity, and counselor-insight embeddings (1536-dim vectors stored in Supabase tables like `college_embeddings` and `student_activity_embeddings`), used to personalize feedback with student profile and activity context.\n\n**6. Misc**\n- `/api/health`, `/api/student/context`, and",
+  "counts": {
+    "tool_calls": 13,
+    "read_file_calls": 9,
+    "search_calls": 3
+  }
+}

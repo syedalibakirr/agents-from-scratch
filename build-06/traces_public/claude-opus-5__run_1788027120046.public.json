@@ -1,0 +1,99 @@
+{
+  "model": "claude-opus-5",
+  "steps": [
+    {
+      "tool": "list_files",
+      "input": {}
+    },
+    {
+      "tool": "search",
+      "input": {
+        "query": "python-backend/"
+      }
+    },
+    {
+      "tool": "search",
+      "input": {
+        "query": "python-backend"
+      }
+    },
+    {
+      "tool": "search",
+      "input": {
+        "query": "uvicorn"
+      }
+    },
+    {
+      "tool": "search",
+      "input": {
+        "query": "FastAPI("
+      }
+    },
+    {
+      "tool": "search",
+      "input": {
+        "query": "APIRouter"
+      }
+    },
+    {
+      "tool": "read_file",
+      "input": {
+        "path": "python-backend/app.py"
+      }
+    },
+    {
+      "tool": "read_file",
+      "input": {
+        "path": "python-backend/README.md"
+      }
+    },
+    {
+      "tool": "read_file",
+      "input": {
+        "path": "python-backend/requirements.txt"
+      }
+    },
+    {
+      "tool": "read_file",
+      "input": {
+        "path": "python-backend/api/routes.py"
+      }
+    },
+    {
+      "tool": "read_file",
+      "input": {
+        "path": "python-backend/config.py"
+      }
+    },
+    {
+      "tool": "search",
+      "input": {
+        "query": "@router."
+      }
+    },
+    {
+      "tool": "search",
+      "input": {
+        "query": "python-backend/services"
+      }
+    },
+    {
+      "tool": "read_file",
+      "input": {
+        "path": "python-backend/services/embedding_pipeline.py"
+      }
+    },
+    {
+      "tool": "read_file",
+      "input": {
+        "path": "python-backend/college_recommender/pipeline.py"
+      }
+    }
+  ],
+  "final_answer": "I have enough to answer. Note: there is a similarly-named `triptic-backend/` directory in this repo, which I deliberately did not read \u2014 everything below comes only from `python-backend/`.\n\n## What this backend does\n\n`python-backend/` is a **Python FastAPI microservice that provides the AI/ML features for a college-admissions platform** (\"UniVerse\"). Its own README describes it as the \"AI Essay Coach Backend (Python Microservice),\" sitting alongside a React client, a Node/Express server, and a Supabase/PostgreSQL database. The client calls it on port 8000, and it in turn calls LLM providers and reads/writes Supabase.\n\n**Main capability areas** (from `api/routes.py`, all mounted under the `/api` prefix):\n\n- **Essay coaching** \u2014 `/essay/analyze` and `/essay/upload`. Supports full essay review via a fine-tuned GPT-3.5 model (`FINE_TUNED_MODEL_ID` in `config.py`), conversational follow-up Q&A with GPT-4o-mini, questions about a user-selected text snippet, intent classification to route between review and Q&A, `.txt`/`.docx` upload parsing, and conversation-history pruning for token limits.\n- **College recommendation** \u2014 `/colleges/recommend` and `/colleges/recalculate-acceptance`. The `college_recommender/` package runs a pandas/scikit-learn pipeline that applies hard filters, scores preferences, computes academic fit, and buckets results into safe/target/ambitious, optionally blending in pre-computed per-student acceptance chances from Supabase.\n- **Extracurricular activity tools** \u2014 `/activity/polish` (rewrites descriptions), `/activity/analyze` (heatmap + gap analysis), and `/activity/rank` (prioritization).\n- **Research chatbot + RAG** \u2014 `/research/ask`, plus counselor message history endpoints. `services/embedding_pipeline.py` builds a vector-search index (1536-dim embeddings in Supabase) over colleges, student activities, student essays, and counselor insights, refreshed through the `/student/refresh-*` endpoints.\n- **Student/dashboard context** \u2014 `/student/context`, `/student/counselor-insights`, `/dashboard/summary`, and `/health`.\n\n**Notable design details:** model choice is configurable via environment variables and LiteLLM (`RESEARCH_CHAT_MODEL_ID` defaults to `openai/gpt-4o`), and both `OPENAI_API_KEY` and `ANTHROPIC_API_KEY` are optional \u2014 `config.py` prints a warning and degrades gracefully, since the ML college recommender works without any LLM key.\n\n## The file that starts it\n\n**`python-backend/app.py`** is the entry point. It creates the `FastAPI` app, adds CORS middleware using `CORS_ORIGINS` from `config.py`, includes the router from `api/routes.py` under the `/api` prefix, defines a root `/` info endpoint, and under `if __name__ == \"__main__\":",
+  "counts": {
+    "tool_calls": 15,
+    "read_file_calls": 7,
+    "search_calls": 7
+  }
+}

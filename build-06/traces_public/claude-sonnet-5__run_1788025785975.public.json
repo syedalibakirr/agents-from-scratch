@@ -1,0 +1,63 @@
+{
+  "model": "claude-sonnet-5",
+  "steps": [
+    {
+      "tool": "list_files",
+      "input": {}
+    },
+    {
+      "tool": "search",
+      "input": {
+        "query": "python-backend"
+      }
+    },
+    {
+      "tool": "search",
+      "input": {
+        "query": "python-backend/main.py"
+      }
+    },
+    {
+      "tool": "search",
+      "input": {
+        "query": "python-backend/app.py"
+      }
+    },
+    {
+      "tool": "read_file",
+      "input": {
+        "path": "python-backend/app.py"
+      }
+    },
+    {
+      "tool": "read_file",
+      "input": {
+        "path": "python-backend/api/routes.py"
+      }
+    },
+    {
+      "tool": "read_file",
+      "input": {
+        "path": "python-backend/config.py"
+      }
+    },
+    {
+      "tool": "search",
+      "input": {
+        "query": "python-backend/services/"
+      }
+    },
+    {
+      "tool": "search",
+      "input": {
+        "query": "@router."
+      }
+    }
+  ],
+  "final_answer": "Based solely on files under `python-backend/`, here's what this backend does and where it starts.\n\n## What it does\n\nThis is a **FastAPI-based Python backend called \"AI Essay Coach Backend\"** that powers AI/ML features for what looks like a college-admissions/counseling platform. It exposes a REST API (mounted under the `/api` prefix) with routes covering several distinct feature areas, implemented via a `services/` layer:\n\n1. **Essay coaching / analysis** (`/api/essay/analyze`, `/api/essay/upload`) \u2014 takes a student's essay text (or an uploaded file, read via `utils/file_reader.py`), and returns AI-generated feedback. Supports two actions: a `full_review` or answering a specific `question` about the essay, using conversation history and optional student profile context for personalization. Backed by `services/conversation.py`, `services/essay_analyzer.py`, `services/chatbot.py`, and `services/intent_classifier.py`, and uses OpenAI (including a fine-tuned GPT-3.5 model) for generation.\n\n2. **College recommendations** (`/api/colleges/recommend`, `/api/colleges/recalculate-acceptance`) \u2014 an ML-based college recommender (`college_recommender/` package, with modules like `data_loading.py`, `pipeline.py`, `scoring.py`) that scores/recommends colleges for a student and can recalculate acceptance chances.\n\n3. **Extracurricular activity tools** \u2014 polishing activity descriptions (`/api/activity/polish` via `services/activity_polisher.py`), generating heatmap/gap analysis of a student's activities (`/api/activity/analyze` via `services/activity_analyzer.py`), and ranking/prioritizing activities (`/api/activity/rank` via `services/activity_ranking.py`).\n\n4. **Research chatbot** (`/api/research/ask`, plus counselor research message/history endpoints) \u2014 a Q&A chatbot for research questions, backed by `services/research_chatbot.py`, configurable to use different LLM providers/models via LiteLLM (`RESEARCH_CHAT_MODEL_ID` in `config.py`).\n\n5. **Student context & embeddings/RAG** (`/api/student/context`, `/api/student/refresh-essay-embeddings`, `/api/student/refresh-activity-embeddings`, `/api/student/counselor-insights`, `/api/student/refresh-counselor-insights`) \u2014 builds/refreshes vector embeddings for essays, activities, and counselor insights (via `services/embedding_pipeline.py`) to support retrieval-augmented personalization, and indexes counselor insights.\n\n6. **Dashboard summaries** (`/api/dashboard/summary`, `/api/dashboard/summary/refresh`) \u2014 generates/refreshes a summarized dashboard view for a student.\n\n7. **Health check** (`/api/health`).\n\nIt connects to a **Supabase** database (`supabase_client.py`) for persistence, uses `config.py` to load API keys (OpenAI, Anthropic) and model IDs from",
+  "counts": {
+    "tool_calls": 9,
+    "read_file_calls": 3,
+    "search_calls": 5
+  }
+}

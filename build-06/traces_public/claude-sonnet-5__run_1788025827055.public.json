@@ -1,0 +1,49 @@
+{
+  "model": "claude-sonnet-5",
+  "steps": [
+    {
+      "tool": "list_files",
+      "input": {}
+    },
+    {
+      "tool": "search",
+      "input": {
+        "query": "python-backend/"
+      }
+    },
+    {
+      "tool": "list_files",
+      "input": {}
+    },
+    {
+      "tool": "search",
+      "input": {
+        "query": "uvicorn"
+      }
+    },
+    {
+      "tool": "search",
+      "input": {
+        "query": "FastAPI("
+      }
+    },
+    {
+      "tool": "read_file",
+      "input": {
+        "path": "python-backend/app.py"
+      }
+    },
+    {
+      "tool": "read_file",
+      "input": {
+        "path": "python-backend/README.md"
+      }
+    }
+  ],
+  "final_answer": "## What the `python-backend/` service does\n\nBased on `python-backend/app.py` and `python-backend/README.md`, this is a **Python FastAPI microservice called the \"AI Essay Coach Backend\"**, part of a larger \"UniVerse\" platform (which also has a React client and a Node/Express server).\n\nIts purpose is to power AI-assisted college-essay coaching:\n\n- **Full essay analysis** \u2013 runs a fine-tuned GPT-3.5 model to give comprehensive feedback on a submitted essay.\n- **Conversational Q&A** \u2013 uses GPT-4o-mini plus conversation history to answer follow-up questions about the essay.\n- **In-text selection queries** \u2013 lets a user highlight a portion of the essay and ask targeted questions about just that selection.\n- **Intent classification** \u2013 a rule-based classifier routes each incoming request to either the full-analysis flow or the Q&A/chat flow.\n- **File upload support** \u2013 accepts `.txt` and `.docx` essay files.\n- **Token/context management** \u2013 automatically prunes conversation history to stay within model context limits.\n\nArchitecturally it sits between the React client and OpenAI's API, and it also talks to Supabase to store conversations/messages:\n\n```\nClient (React) \u2192 Python Backend (port 8000) \u2192 OpenAI API\n                        \u2193\n                    Supabase (store conversations & messages)\n```\n\nCode is organized into `models/` (OpenAI client management), `services/` (intent classifier, essay analyzer, chatbot, conversation orchestration), plus `config.py` for environment/config settings and `api/routes.py` for the actual HTTP endpoints (mounted under `/api`, e.g. `/api/health`).\n\n## Entry point\n\nThe service is started from **`python-backend/app.py`**. It creates the `FastAPI` app, sets up CORS, includes the API router under the `/api` prefix, and when run directly (`python app.py`) launches it via `uvicorn.run(\"app:app\", host=\"0.0.0.0\", port=8000, reload=True)`. (It can also be started with `uvicorn app:app --reload --host 0.0.0.0 --port 8000` per the README.)",
+  "counts": {
+    "tool_calls": 7,
+    "read_file_calls": 2,
+    "search_calls": 3
+  }
+}

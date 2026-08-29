@@ -1,0 +1,93 @@
+{
+  "model": "claude-opus-5",
+  "steps": [
+    {
+      "tool": "list_files",
+      "input": {}
+    },
+    {
+      "tool": "search",
+      "input": {
+        "query": "python-backend/"
+      }
+    },
+    {
+      "tool": "search",
+      "input": {
+        "query": "python-backend"
+      }
+    },
+    {
+      "tool": "read_file",
+      "input": {
+        "path": "python-backend/main.py"
+      }
+    },
+    {
+      "tool": "read_file",
+      "input": {
+        "path": "python-backend/api/routes.py"
+      }
+    },
+    {
+      "tool": "read_file",
+      "input": {
+        "path": "python-backend/app.py"
+      }
+    },
+    {
+      "tool": "read_file",
+      "input": {
+        "path": "python-backend/config.py"
+      }
+    },
+    {
+      "tool": "read_file",
+      "input": {
+        "path": "python-backend/README.md"
+      }
+    },
+    {
+      "tool": "search",
+      "input": {
+        "query": "@router."
+      }
+    },
+    {
+      "tool": "read_file",
+      "input": {
+        "path": "python-backend/services/conversation.py"
+      }
+    },
+    {
+      "tool": "read_file",
+      "input": {
+        "path": "python-backend/requirements.txt"
+      }
+    },
+    {
+      "tool": "read_file",
+      "input": {
+        "path": "python-backend/services/research_chatbot.py"
+      }
+    },
+    {
+      "tool": "search",
+      "input": {
+        "query": "uvicorn"
+      }
+    },
+    {
+      "tool": "read_file",
+      "input": {
+        "path": "python-backend/Procfile"
+      }
+    }
+  ],
+  "final_answer": "## What this backend is\n\n`python-backend/` is a **FastAPI microservice that provides the AI features for a college-application platform (\"UniVerse\")**. Per its own README, it's one service in a monorepo alongside a React client, a Node/Express server, and a Supabase/Postgres database, and the flow is: React client \u2192 this Python service (port 8000) \u2192 LLM APIs, with Supabase used for persistence.\n\n**Composition** (`app.py`): it creates a `FastAPI` app titled \"AI Essay Coach Backend\" (v1.0.0), adds CORS middleware driven by `CORS_ORIGINS` from `config.py`, mounts a single router from `api/routes.py` under the `/api` prefix, and exposes a root `/` endpoint returning basic API info plus pointers to `/docs` and `/api/health`.\n\n**What it actually does** \u2014 the router registers roughly these capability groups:\n\n- **Essay coaching** (`/api/essay/analyze`, `/api/essay/upload`): full essay reviews and follow-up Q&A, including questions about a user-selected snippet of text. `services/conversation.py` orchestrates this: it classifies intent, routes to either `essay_analyzer` (a fine-tuned GPT-3.5 model, `ft:gpt-3.5-turbo-0125:pal-ai::CXCkJfDi`) or `chatbot`, summarizes each turn to keep conversation history compact, and returns quality scores (structure/voice/specificity). Uploads accept `.txt`/`.docx`.\n- **College recommendation** (`/api/colleges/recommend`, `/api/colleges/recalculate-acceptance`): an ML-based recommender (pandas/numpy/scikit-learn are in `requirements.txt`); `config.py` notes this path works even without an OpenAI key.\n- **Activities tooling** (`/api/activity/polish`, `/analyze`, `/rank`): rewrites activity descriptions, builds heatmap/gap analyses, and prioritizes activities.\n- **Research chatbot** (`/api/research/ask`, plus counselor message history/delete endpoints): a general admissions advisor covering college lists, financial aid, testing, deadlines, recommendations, and interviews \u2014 explicitly instructed to *refuse* line-level essay editing and redirect to the Essay Assistant. It's model-agnostic via LiteLLM (`RESEARCH_CHAT_MODEL_ID`, default `openai/gpt-4o`).\n- **RAG / embeddings** (`services/embedding_pipeline.py`, `/api/student/refresh-*-embeddings`, `/api/student/counselor-",
+  "counts": {
+    "tool_calls": 14,
+    "read_file_calls": 9,
+    "search_calls": 4
+  }
+}

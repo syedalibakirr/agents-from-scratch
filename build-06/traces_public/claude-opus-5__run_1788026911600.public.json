@@ -1,0 +1,93 @@
+{
+  "model": "claude-opus-5",
+  "steps": [
+    {
+      "tool": "list_files",
+      "input": {}
+    },
+    {
+      "tool": "search",
+      "input": {
+        "query": "python-backend/"
+      }
+    },
+    {
+      "tool": "search",
+      "input": {
+        "query": "python-backend"
+      }
+    },
+    {
+      "tool": "read_file",
+      "input": {
+        "path": "python-backend/main.py"
+      }
+    },
+    {
+      "tool": "read_file",
+      "input": {
+        "path": "python-backend/api/routes.py"
+      }
+    },
+    {
+      "tool": "read_file",
+      "input": {
+        "path": "python-backend/config.py"
+      }
+    },
+    {
+      "tool": "read_file",
+      "input": {
+        "path": "python-backend/app.py"
+      }
+    },
+    {
+      "tool": "read_file",
+      "input": {
+        "path": "python-backend/README.md"
+      }
+    },
+    {
+      "tool": "read_file",
+      "input": {
+        "path": "python-backend/requirements.txt"
+      }
+    },
+    {
+      "tool": "search",
+      "input": {
+        "query": "@router."
+      }
+    },
+    {
+      "tool": "search",
+      "input": {
+        "query": "def "
+      }
+    },
+    {
+      "tool": "read_file",
+      "input": {
+        "path": "python-backend/services/research_chatbot.py"
+      }
+    },
+    {
+      "tool": "read_file",
+      "input": {
+        "path": "python-backend/college_recommender/pipeline.py"
+      }
+    },
+    {
+      "tool": "read_file",
+      "input": {
+        "path": "python-backend/services/conversation.py"
+      }
+    }
+  ],
+  "final_answer": "## What this backend is\n\n`python-backend/` is a **standalone Python FastAPI microservice** that provides the AI/ML features for a college-application platform (\"UniVerse\"). Per its own README, it sits alongside a React client and a Node/Express server in a monorepo, and talks to OpenAI/Anthropic APIs and Supabase.\n\nThe app is created in `app.py`: a `FastAPI` instance titled *\"AI Essay Coach Backend\"* (v1.0.0), with CORS middleware configured from `config.CORS_ORIGINS`, a root `/` info endpoint, and all real routes mounted from `api/routes.py` under the `/api` prefix.\n\n**Capability areas**, based on the route decorators in `api/routes.py` and the services they import:\n\n- **Essay coaching** \u2014 `/api/essay/analyze` and `/api/essay/upload`. `services/conversation.py` orchestrates the flow: classify intent, then either a full review (`essay_analyzer`) or follow-up Q&A (`chatbot`), with conversation history summarization/pruning. Supports in-text selection queries and personalization from student profile + activity RAG chunks. Uploads accept `.txt`/`.docx` (`utils/file_reader.py`, `python-docx`).\n- **College recommendations** \u2014 `/api/colleges/recommend` and `/api/colleges/recalculate-acceptance`. The `college_recommender/` package (pandas/numpy/scikit-learn) loads a master dataframe from Supabase (`data_loading.py`), applies hard filters, preference scoring, and academic fit (`scoring.py`), then buckets results into safe/target/ambitious (`pipeline.py`). It can also join pre-computed per-student acceptance chances from a `student_college_acceptance_chances` table.\n- **Activities** \u2014 `/api/activity/polish`, `/activity/analyze` (heatmap + gap analysis), `/activity/rank`.\n- **Research chatbot** \u2014 `/api/research/ask` plus counselor message history endpoints. `services/research_chatbot.py` is a general admissions-counselor bot (college lists, aid, testing, deadlines, recs, interviews",
+  "counts": {
+    "tool_calls": 14,
+    "read_file_calls": 9,
+    "search_calls": 4
+  }
+}

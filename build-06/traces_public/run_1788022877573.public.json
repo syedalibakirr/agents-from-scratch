@@ -1,0 +1,137 @@
+{
+  "model": null,
+  "steps": [
+    {
+      "tool": "list_files",
+      "input": {}
+    },
+    {
+      "tool": "search",
+      "input": {
+        "query": "python-backend"
+      }
+    },
+    {
+      "tool": "search",
+      "input": {
+        "query": "triptic-backend"
+      }
+    },
+    {
+      "tool": "read_file",
+      "input": {
+        "path": "CLAUDE.md"
+      }
+    },
+    {
+      "tool": "search",
+      "input": {
+        "query": "server/                "
+      }
+    },
+    {
+      "tool": "read_file",
+      "input": {
+        "path": "triptic-backend/main.py"
+      }
+    },
+    {
+      "tool": "search",
+      "input": {
+        "query": "\u251c\u2500\u2500 server"
+      }
+    },
+    {
+      "tool": "search",
+      "input": {
+        "query": "PORT"
+      }
+    },
+    {
+      "tool": "read_file",
+      "input": {
+        "path": "python-backend/README.md"
+      }
+    },
+    {
+      "tool": "read_file",
+      "input": {
+        "path": "CLAUDE.md"
+      }
+    },
+    {
+      "tool": "search",
+      "input": {
+        "query": "Render"
+      }
+    },
+    {
+      "tool": "search",
+      "input": {
+        "query": "VITE_API"
+      }
+    },
+    {
+      "tool": "list_files",
+      "input": {}
+    },
+    {
+      "tool": "search",
+      "input": {
+        "query": "server/index.js"
+      }
+    },
+    {
+      "tool": "search",
+      "input": {
+        "query": "server/package.json"
+      }
+    },
+    {
+      "tool": "search",
+      "input": {
+        "query": "deprecated"
+      }
+    },
+    {
+      "tool": "list_files",
+      "input": {}
+    },
+    {
+      "tool": "search",
+      "input": {
+        "query": "server/src"
+      }
+    },
+    {
+      "tool": "read_file",
+      "input": {
+        "path": "server/package.json"
+      }
+    },
+    {
+      "tool": "search",
+      "input": {
+        "query": "app.listen"
+      }
+    },
+    {
+      "tool": "search",
+      "input": {
+        "query": "triptic-backend"
+      }
+    },
+    {
+      "tool": "search",
+      "input": {
+        "query": "FastAPI AI backend"
+      }
+    }
+  ],
+  "final_answer": "`triptic-backend` isn't even referenced anywhere in the documentation (CLAUDE.md, READMEs) \u2014 it only shows up as its own tiny `main.py` stub, suggesting it's an unused/experimental scaffold.\n\n**`python-backend` is the live backend.**\n\nEvidence:\n- `CLAUDE.md`'s official repo map explicitly labels it: `\u251c\u2500\u2500 python-backend/ \u2190 FastAPI AI backend`.\n- `python-backend/README.md` describes it as \"THIS SERVICE - Python AI engine,\" part of the live \"UniVerse platform\" monorepo, running on port 8000, with `server/` (Node/Express) listed alongside it in the diagram but not documented as active anywhere else.\n- The actual frontend code (`client/src/services/*Api.ts`, `CounselorResearchWindow.tsx`, etc.) all default to `VITE_API_BASE_URL || \"http://localhost:8000\"` \u2014 port 8000 is exactly what `python-backend`'s FastAPI app serves, confirming it's the one the live client actually talks to.\n- `server/` (Express/TS) exists with a `server.tsx`/`server.js` listening on port 3000, but nothing in the client code points to that port \u2014 it looks like a legacy/skeleton Node backend not wired into the live app.\n- `triptic-backend/` is just a minimal one-file FastAPI stub (`main.py` with a `/health` check and a couple of routers) that isn't referenced anywhere in `CLAUDE.md`, the README, or any client API call \u2014 it looks like an early scaffold/experiment, not the live service.",
+  "counts": {
+    "tool_calls": 22,
+    "read_file_calls": 5,
+    "search_calls": 14
+  }
+}

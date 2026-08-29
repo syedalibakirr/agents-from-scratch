@@ -1,0 +1,81 @@
+{
+  "model": "claude-sonnet-5",
+  "steps": [
+    {
+      "tool": "list_files",
+      "input": {}
+    },
+    {
+      "tool": "search",
+      "input": {
+        "query": "python-backend"
+      }
+    },
+    {
+      "tool": "search",
+      "input": {
+        "query": "python-backend/main.py"
+      }
+    },
+    {
+      "tool": "search",
+      "input": {
+        "query": "uvicorn.run"
+      }
+    },
+    {
+      "tool": "read_file",
+      "input": {
+        "path": "python-backend/app.py"
+      }
+    },
+    {
+      "tool": "search",
+      "input": {
+        "query": "python-backend/api/routes.py"
+      }
+    },
+    {
+      "tool": "search",
+      "input": {
+        "query": "python-backend/config.py"
+      }
+    },
+    {
+      "tool": "read_file",
+      "input": {
+        "path": "python-backend/api/routes.py"
+      }
+    },
+    {
+      "tool": "read_file",
+      "input": {
+        "path": "python-backend/config.py"
+      }
+    },
+    {
+      "tool": "search",
+      "input": {
+        "query": "@router."
+      }
+    },
+    {
+      "tool": "search",
+      "input": {
+        "query": "python-backend/services"
+      }
+    },
+    {
+      "tool": "search",
+      "input": {
+        "query": "python-backend/college_recommender"
+      }
+    }
+  ],
+  "final_answer": "Based on the files within `python-backend/`, here's what this backend does:\n\n## What the backend does\n\n`python-backend/` is a **FastAPI application** called the **\"AI Essay Coach Backend\"** \u2014 the AI-powered backend for a college-admissions/essay-coaching platform. It exposes a REST API (mounted under the `/api` prefix) that provides several groups of features, based on the routes defined in `python-backend/api/routes.py`:\n\n- **Essay coaching**: `/api/essay/analyze` and `/api/essay/upload` \u2014 analyzes a student's essay (full review or Q&A), using a fine-tuned OpenAI model, with support for uploaded essay files.\n- **College recommendations**: `/api/colleges/recommend` and `/api/colleges/recalculate-acceptance` \u2014 powered by a `college_recommender` module (scoring/data-loading/pipeline logic) that recommends colleges and estimates acceptance likelihood.\n- **Activity tools**: `/api/activity/polish`, `/api/activity/analyze`, `/api/activity/rank` \u2014 polishes descriptions of extracurricular activities, generates \"heatmap\"/gap analysis, and prioritizes/ranks activities.\n- **Student context & dashboard**: `/api/student/context`, `/api/dashboard/summary` (and refresh variant) \u2014 aggregates a student's profile/activity data for personalization.\n- **Research chatbot**: `/api/research/ask`, plus counselor research message history endpoints (`/api/counselor/research/messages`, delete history) \u2014 a chatbot for research questions with conversation summarization, backed by `services/research_chatbot.py`.\n- **Embeddings / RAG pipeline**: `/api/student/refresh-essay-embeddings`, `/api/student/refresh-activity-embeddings`, `/api/student/counselor-insights`, `/api/student/refresh-counselor-insights` \u2014 indexes essays, activities, and counselor insights into vector embeddings (via `services/embedding_pipeline.py`) for retrieval-augmented features.\n- **Health check**: `/api/health`.\n\nSupporting pieces include:\n- `config.py` \u2014 loads environment variables (OpenAI/Anthropic API keys, model IDs, CORS origins, system prompts).\n- `supabase_client.py` \u2014 connects to Supabase (the backing database).\n- `services/` \u2014 business logic modules (conversation manager, activity polisher/analyzer/ranking, research chatbot, embedding pipeline, intent classifier, essay analyzer, chatbot).\n- `college_recommender/` \u2014 ML/data pipeline for scoring and recommending colleges.\n- `utils/file_reader.py` \u2014 helper for reading uploaded essay files.\n\nCORS is configured to allow a frontend (likely the React app in the rest of the repo) to call this API.\n\n## Entry point\n\nThe backend is started from **`python-backend/app.py`**. It creates the `FastAPI` app, sets up CORS, includes the API router from `api/routes.py` under the `/api` prefix, and when run directly launches the server via:\n```python",
+  "counts": {
+    "tool_calls": 12,
+    "read_file_calls": 3,
+    "search_calls": 8
+  }
+}

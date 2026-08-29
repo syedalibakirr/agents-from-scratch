@@ -1,0 +1,79 @@
+{
+  "model": "claude-sonnet-5",
+  "steps": [
+    {
+      "tool": "list_files",
+      "input": {}
+    },
+    {
+      "tool": "search",
+      "input": {
+        "query": "python-backend"
+      }
+    },
+    {
+      "tool": "search",
+      "input": {
+        "query": "uvicorn"
+      }
+    },
+    {
+      "tool": "search",
+      "input": {
+        "query": "FastAPI("
+      }
+    },
+    {
+      "tool": "read_file",
+      "input": {
+        "path": "python-backend/app.py"
+      }
+    },
+    {
+      "tool": "read_file",
+      "input": {
+        "path": "python-backend/README.md"
+      }
+    },
+    {
+      "tool": "read_file",
+      "input": {
+        "path": "python-backend/api/routes.py"
+      }
+    },
+    {
+      "tool": "list_files",
+      "input": {}
+    },
+    {
+      "tool": "search",
+      "input": {
+        "query": "services/"
+      }
+    },
+    {
+      "tool": "read_file",
+      "input": {
+        "path": "python-backend/CHANGELOG.md"
+      }
+    },
+    {
+      "tool": "read_file",
+      "input": {
+        "path": "docs/rag/STUDENT_AGENT.md"
+      }
+    },
+    {
+      "tool": "read_file",
+      "input": {
+        "path": "python-backend/config.py"
+      }
+    }
+  ],
+  "final_answer": "I now have enough detail to answer.\n\n## What the `python-backend/` service does\n\n`python-backend/` is a **Python FastAPI microservice** that acts as the AI engine for the UniVerse college-admissions platform (the React client and Node/Express `server/` live in sibling folders, but per the instructions those weren't examined). It exposes an HTTP API (mounted under `/api`) that the rest of the app calls to get AI-generated help for students and counselors. Its main responsibilities, based on `api/routes.py`, `services/`, and `config.py`:\n\n1. **Essay Coaching (\"Essay Agent\")** \u2013 `services/conversation.py` orchestrates:\n   - `intent_classifier.py` \u2014 decides if a student message is a request for a *full essay review* or a *conversational follow-up/question*.\n   - `essay_analyzer.py` \u2014 runs a fine-tuned GPT-3.5 model to produce full narrative feedback plus structure/voice/specificity quality scores.\n   - `chatbot.py` \u2014 uses GPT-4o-mini to answer follow-up questions, including questions about a specific highlighted (\"in-text selection\") passage.\n   - `utils/summarizer.py` \u2014 compresses each turn into a short summary to maintain conversation history within token limits.\n   - Supports uploading `.txt`/`.docx` essay files (`utils/file_reader.py`).\n\n2. **Activity tools** \u2013 `services/activity_polisher.py`, `activity_analyzer.py`, and `activity_ranking.py` help polish, analyze (heatmaps/gap analysis), and prioritize a student's extracurricular activities.\n\n3. **Research Chatbot** \u2013 `services/research_chatbot.py` powers a `/api/research/ask`-style endpoint using a configurable LLM (via LiteLLM) for research Q&A, with summarization.\n\n4. **RAG / Embeddings & Counselor Insights** \u2013 `services/embedding_pipeline.py` and `services/rag_retriever.py` generate/query vector embeddings (stored in Supabase) to retrieve counselor insights and personalize responses with student profile/activity context.\n\n5. **College Recommender** \u2013 a `college_recommender/` module (data loading, scoring, pipeline) provides an ML-based college recommendation engine that works independently of the OpenAI/Anthropic keys.\n\n6. **Supabase integration** \u2013 `supabase_client.py` connects to the shared Supabase/Postgres database to store conversations, messages, and embeddings, and to read student profile data used for personalization.\n\n7. **Configuration** \u2013 `config.py` loads API keys (OpenAI, Anthropic) and model IDs (fine-tuned essay model, base chat model, research chat model, embeddings model) from environment variables, with graceful warnings if keys are missing (the ML recommender can run without them).\n\nThe service is CORS-enabled so the frontend client can call it directly, and it registers all routes from `api/routes.py` under the `/api` prefix, plus a root `/` info endpoint and (via FastAPI) automatic `/docs` API documentation.\n\n## Entry point\n\nThe backend is",
+  "counts": {
+    "tool_calls": 12,
+    "read_file_calls": 6,
+    "search_calls": 4
+  }
+}

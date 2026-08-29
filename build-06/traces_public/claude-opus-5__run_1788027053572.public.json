@@ -1,0 +1,99 @@
+{
+  "model": "claude-opus-5",
+  "steps": [
+    {
+      "tool": "list_files",
+      "input": {}
+    },
+    {
+      "tool": "search",
+      "input": {
+        "query": "python-backend/"
+      }
+    },
+    {
+      "tool": "search",
+      "input": {
+        "query": "python-backend"
+      }
+    },
+    {
+      "tool": "read_file",
+      "input": {
+        "path": "python-backend/main.py"
+      }
+    },
+    {
+      "tool": "read_file",
+      "input": {
+        "path": "python-backend/api/routes.py"
+      }
+    },
+    {
+      "tool": "read_file",
+      "input": {
+        "path": "python-backend/app.py"
+      }
+    },
+    {
+      "tool": "read_file",
+      "input": {
+        "path": "python-backend/config.py"
+      }
+    },
+    {
+      "tool": "search",
+      "input": {
+        "query": "@router.post"
+      }
+    },
+    {
+      "tool": "search",
+      "input": {
+        "query": "@router.get"
+      }
+    },
+    {
+      "tool": "read_file",
+      "input": {
+        "path": "python-backend/requirements.txt"
+      }
+    },
+    {
+      "tool": "read_file",
+      "input": {
+        "path": "python-backend/supabase_client.py"
+      }
+    },
+    {
+      "tool": "read_file",
+      "input": {
+        "path": "python-backend/services/conversation.py"
+      }
+    },
+    {
+      "tool": "read_file",
+      "input": {
+        "path": "python-backend/services/research_chatbot.py"
+      }
+    },
+    {
+      "tool": "read_file",
+      "input": {
+        "path": "python-backend/college_recommender/pipeline.py"
+      }
+    },
+    {
+      "tool": "read_file",
+      "input": {
+        "path": "python-backend/README.md"
+      }
+    }
+  ],
+  "final_answer": "## What it does\n\n`python-backend/` is a **FastAPI microservice that provides the AI/ML features for a college-application platform** (\"UniVerse\"). Per its own `README.md`, it sits alongside a React client and a Node/Express server in a monorepo, and is called by the frontend on port 8000 while Supabase stores the persisted data.\n\nIts responsibilities, based on the route table in `api/routes.py` and the `services/` modules:\n\n**Essay coaching (the original core)**\n- `POST /api/essay/analyze` \u2014 full essay review or follow-up Q&A, orchestrated by `services/conversation.py`, which routes between `intent_classifier`, `essay_analyzer` (a fine-tuned GPT-3.5 model, `ft:gpt-3.5-turbo-0125:pal-ai::CXCkJfDi`) and `chatbot` (`gpt-4o-mini`), summarizing each turn into a rolling history.\n- `POST /api/essay/upload` \u2014 accepts `.txt`/`.docx` uploads via `utils/file_reader.py`.\n- `POST /api/essay/compare-drafts`.\n\n**College recommendation (ML, no LLM required)**\n- `POST /api/colleges/recommend` \u2014 the `college_recommender/` package loads a master dataframe, applies hard filters, scores preferences and academic fit, then buckets results into safe/target/ambitious and returns the top N per bucket (`pipeline.py`). It optionally pulls pre-computed per-student acceptance chances from the Supabase table `student_college_acceptance_chances`.\n- `POST /api/colleges/recalculate-acceptance`.\n\n**Activities, research chat, and RAG**\n- `POST /api/activity/polish` / `/analyze` / `/rank` \u2014 rewrite descriptions, build heatmap and gap analyses, prioritize activities.\n- `POST /api/research/ask` \u2014 a general admissions-advice chatbot (`services/research_chatbot.py`) whose system prompt explicitly *refuses* line-level essay critique and redirects to the Essay Assistant. It calls models through **LiteLLM**, so the provider is swappable via the `RESEARCH_CHAT_MODEL_ID` env var.\n- `/api/student/refresh-essay-embedd",
+  "counts": {
+    "tool_calls": 15,
+    "read_file_calls": 10,
+    "search_calls": 4
+  }
+}

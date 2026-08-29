@@ -1,0 +1,81 @@
+{
+  "model": "claude-opus-5",
+  "steps": [
+    {
+      "tool": "list_files",
+      "input": {}
+    },
+    {
+      "tool": "search",
+      "input": {
+        "query": "python-backend/"
+      }
+    },
+    {
+      "tool": "search",
+      "input": {
+        "query": "python-backend"
+      }
+    },
+    {
+      "tool": "search",
+      "input": {
+        "query": "app = FastAPI"
+      }
+    },
+    {
+      "tool": "search",
+      "input": {
+        "query": "uvicorn"
+      }
+    },
+    {
+      "tool": "search",
+      "input": {
+        "query": "college_recommender"
+      }
+    },
+    {
+      "tool": "read_file",
+      "input": {
+        "path": "python-backend/app.py"
+      }
+    },
+    {
+      "tool": "read_file",
+      "input": {
+        "path": "python-backend/README.md"
+      }
+    },
+    {
+      "tool": "read_file",
+      "input": {
+        "path": "python-backend/api/routes.py"
+      }
+    },
+    {
+      "tool": "read_file",
+      "input": {
+        "path": "python-backend/config.py"
+      }
+    },
+    {
+      "tool": "search",
+      "input": {
+        "query": "@router."
+      }
+    },
+    {
+      "tool": "read_file",
+      "input": {
+        "path": "python-backend/QUICKSTART.md"
+      }
+    }
+  ],
+  "final_answer": "## What `python-backend/` is\n\nIt's a **Python FastAPI microservice that provides the AI/ML features** for the UniVerse college-application platform. Per its own README, it sits alongside a React client, a Node/Express server, and a Supabase/Postgres database in a monorepo, and it runs on **port 8000**, calling out to LLM providers (OpenAI, Anthropic via LiteLLM) and reading/writing Supabase.\n\nAlthough it's titled \"AI Essay Coach Backend,\" the route table shows it has grown well beyond essays into four main areas:\n\n**1. Essay coaching (the original purpose)**\n- `POST /api/essay/analyze` \u2014 full essay review via a fine-tuned GPT-3.5 model (`ft:gpt-3.5-turbo-0125:pal-ai::CXCkJfDi`), or conversational Q&A via `gpt-4o-mini`, including \"in-text\" questions about a user-selected passage, with conversation history carried along.\n- `POST /api/essay/upload` \u2014 accepts essay files (`.txt`/`.docx`) with extension and size limits.\n- Supporting services: intent classification (rule-based routing between review vs. Q&A), an essay analyzer, a chatbot, and a conversation orchestrator that prunes history to stay within token limits.\n\n**2. College recommendations**\n- `POST /api/colleges/recommend` \u2014 an ML recommender (the `college_recommender/` package with `data_loading.py`, `scoring.py`, `pipeline.py`) that pulls college data from Supabase. Notably, config says this works *without* an OpenAI key.\n- `POST /api/colleges/recalculate-acceptance`.\n\n**3. Extracurricular activity tooling**\n- `POST /api/activity/polish` (rewrite descriptions), `/api/activity/analyze` (heatmap + gap analysis), `/api/activity/rank` (prioritization).\n\n**4. Research chatbot + RAG / student context**\n- `POST /api/research/ask`, plus counselor chat history endpoints (`GET`/`DELETE /api/counselor/research/...`).\n- An embeddings/RAG pipeline: endpoints to refresh essay, activity, and counselor-insight embeddings, backed by 1536-dim vectors in `college_embeddings` / `student_activity_embeddings` tables.\n- `GET /api/student/context` and dashboard summary endpoints (`GET`/`POST /api/dashboard/summary[/refresh]`).\n\nCross-cutting details: all routes are mounted under the `/api` prefix, CORS is configured from `CORS_ORIGINS`, there's a `GET /api/health` check and a root `/` info endpoint, and the research model is swappable by env var (`RESEARCH_CHAT_MODEL_ID`, default `openai/gpt-4o`) so providers can be changed with no code edits.\n\n## The file that starts it\n\n**`python-backend/app.py`** \u2014 it constructs the `FastAPI` app, adds CORS middleware, includes the router under `/api`, and under `if __name__",
+  "counts": {
+    "tool_calls": 12,
+    "read_file_calls": 5,
+    "search_calls": 6
+  }
+}

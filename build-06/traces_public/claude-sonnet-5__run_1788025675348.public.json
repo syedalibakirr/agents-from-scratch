@@ -1,0 +1,79 @@
+{
+  "model": "claude-sonnet-5",
+  "steps": [
+    {
+      "tool": "list_files",
+      "input": {}
+    },
+    {
+      "tool": "search",
+      "input": {
+        "query": "python-backend"
+      }
+    },
+    {
+      "tool": "search",
+      "input": {
+        "query": "python-backend/main.py"
+      }
+    },
+    {
+      "tool": "search",
+      "input": {
+        "query": "python-backend/app.py"
+      }
+    },
+    {
+      "tool": "search",
+      "input": {
+        "query": "python-backend/"
+      }
+    },
+    {
+      "tool": "list_files",
+      "input": {}
+    },
+    {
+      "tool": "read_file",
+      "input": {
+        "path": "python-backend/app.py"
+      }
+    },
+    {
+      "tool": "read_file",
+      "input": {
+        "path": "python-backend/README.md"
+      }
+    },
+    {
+      "tool": "read_file",
+      "input": {
+        "path": "python-backend/api/routes.py"
+      }
+    },
+    {
+      "tool": "read_file",
+      "input": {
+        "path": "python-backend/config.py"
+      }
+    },
+    {
+      "tool": "search",
+      "input": {
+        "query": "@router.get"
+      }
+    },
+    {
+      "tool": "search",
+      "input": {
+        "query": "@router.post"
+      }
+    }
+  ],
+  "final_answer": "## What the `python-backend/` service does\n\nThis directory is a standalone **Python FastAPI microservice** (the \"AI Essay Coach Backend\") that is part of a larger UniVerse platform (alongside a separate `client/` React frontend and `server/` Node.js backend, which live outside this folder and were not examined). Based solely on the files under `python-backend/`, this service is the platform's **AI engine**, exposing a REST API (mounted under the `/api` prefix) that powers a range of AI-driven features for students and counselors:\n\n- **Essay coaching** (`/api/essay/analyze`, `/api/essay/upload`, `/api/essay/compare-drafts`): analyzes student college essays using a fine-tuned OpenAI model (`ft:gpt-3.5-turbo-0125:pal-ai::CXCkJfDi`) for full reviews, and a base chat model (`gpt-4o-mini`) for conversational follow-up Q&A/in-text queries, with intent classification to route between the two. Supports `.txt`/`.docx` file uploads.\n- **College recommendations** (`/api/colleges/recommend`, `/api/colleges/recalculate-acceptance`): a college-recommender/scoring engine.\n- **Activity tools** (`/api/activity/polish`, `/api/activity/analyze`, `/api/activity/rank`): polishes extracurricular activity descriptions, generates heatmap/gap analysis, and prioritizes/ranks activities.\n- **Research chatbot** (`/api/research/ask`): a Q&A chatbot (configurable LLM via `RESEARCH_CHAT_MODEL_ID`, default `openai/gpt-4o`) with counselor-insight embedding indexing/RAG support (`/api/student/refresh-*-embeddings`).\n- **Student context & dashboard** (`/api/student/context`, `/api/dashboard/summary`, `/api/dashboard/summary/refresh`): aggregates student profile/activity data for personalization.\n- **Marketplace matching** (`/api/marketplace/match-counselors`) and **counselor chat features** (e.g., `/api/counselor/chat/detect-meeting-intent`, `/api/counselor/research/messages`, `/api/student/counselor-insights`): AI-assisted matching between students and counselors, using Anthropic's API for some of this.\n- **Health check** (`/api/health`).\n\nIt integrates with **OpenAI** and **Anthropic** APIs (keys loaded via `config.py`/`.env`) and with **Supabase** (`supabase_client.py`) for storing conversations, messages, embeddings, and other persistent data.\n\nInternally it's organized into `api/routes.py` (endpoint definitions), `services/` (business logic like `conversation.py`, `essay_analyzer.py`, `chatbot.py`, `intent_classifier.py`, `activity_polisher.py`, `activity_analyzer.py`, `activity_ranking.py`, `research_chatbot.py`, `embedding_pipeline.py`), `models",
+  "counts": {
+    "tool_calls": 12,
+    "read_file_calls": 4,
+    "search_calls": 6
+  }
+}

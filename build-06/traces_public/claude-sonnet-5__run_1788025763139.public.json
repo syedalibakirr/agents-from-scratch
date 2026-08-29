@@ -1,0 +1,73 @@
+{
+  "model": "claude-sonnet-5",
+  "steps": [
+    {
+      "tool": "list_files",
+      "input": {}
+    },
+    {
+      "tool": "search",
+      "input": {
+        "query": "python-backend"
+      }
+    },
+    {
+      "tool": "list_files",
+      "input": {}
+    },
+    {
+      "tool": "search",
+      "input": {
+        "query": "uvicorn"
+      }
+    },
+    {
+      "tool": "search",
+      "input": {
+        "query": "FastAPI("
+      }
+    },
+    {
+      "tool": "read_file",
+      "input": {
+        "path": "python-backend/app.py"
+      }
+    },
+    {
+      "tool": "read_file",
+      "input": {
+        "path": "python-backend/README.md"
+      }
+    },
+    {
+      "tool": "read_file",
+      "input": {
+        "path": "python-backend/api/routes.py"
+      }
+    },
+    {
+      "tool": "read_file",
+      "input": {
+        "path": "python-backend/config.py"
+      }
+    },
+    {
+      "tool": "search",
+      "input": {
+        "query": "@router.post"
+      }
+    },
+    {
+      "tool": "search",
+      "input": {
+        "query": "@router.get"
+      }
+    }
+  ],
+  "final_answer": "I now have enough detail to answer.\n\n## What the `python-backend/` service does\n\nThis directory contains a **Python FastAPI microservice** that is the \"AI engine\" for a larger platform called UniVerse (a college-admissions/essay-coaching product). It's a separate service from the Node/React parts of the monorepo and talks to OpenAI (and other LLM providers) plus Supabase.\n\nIts main responsibilities, based on the route table in `api/routes.py`:\n\n- **Essay coaching**\n  - `/api/essay/analyze` \u2013 full essay review or follow-up Q&A using a fine-tuned GPT-3.5 model plus GPT-4o-mini for conversation, with intent classification to route between \"full review\" and \"question\" modes.\n  - `/api/essay/upload` \u2013 accepts `.txt`/`.docx` uploads and extracts essay text.\n  - `/api/essay/compare-drafts` \u2013 compares essay drafts.\n\n- **College recommendations**\n  - `/api/colleges/recommend` \u2013 a college recommender/scoring pipeline (there's a `college_recommender` package with data loading, scoring, pipeline logic).\n  - `/api/colleges/recalculate-acceptance` \u2013 recalculates acceptance-chance data.\n\n- **Activities**\n  - `/api/activity/polish` \u2013 rewrites/polishes an activity description.\n  - `/api/activity/analyze` \u2013 generates heatmap/gap analysis of a student's activities.\n  - `/api/activity/rank` \u2013 prioritizes/ranks activities.\n\n- **Research chatbot / RAG**\n  - `/api/research/ask` \u2013 a research chatbot with conversation summarization (uses an embeddings pipeline and vector search over \"college_embeddings\"/\"student_activity_embeddings\" tables in Supabase).\n  - Endpoints to refresh essay/activity embeddings and counselor insights (`/api/student/refresh-*-embeddings`, `/api/student/refresh-counselor-insights`).\n\n- **Student context & dashboard**\n  - `/api/student/context`, `/api/student/counselor-insights`, `/api/dashboard/summary` (+ refresh) \u2013 aggregate student profile/activity/essay data for personalization and dashboard summaries.\n\n- **Counselor/marketplace features**\n  - `/api/counselor/chat/detect-meeting-intent` \u2013 detects meeting-scheduling intent in counselor chat.\n  - `/api/counselor/research/messages` \u2013 fetches research chat messages.\n  - `/api/marketplace/match-counselors` \u2013 AI-based counselor matching for the marketplace.\n\n- **Health check**: `/api/health`.\n\nSupporting structure:\n- `config.py` \u2013 loads env vars (OpenAI/Anthropic API keys, model IDs like the fine-tuned GPT-3.5 model and `gpt-4o-mini`, embeddings model, CORS origins, upload limits).\n- `models/ai_models.py` \u2013 OpenAI client management.\n- `services/` \u2013 business logic (intent_classifier, essay_analyzer, chatbot, conversation orchestration, activity_polisher, activ",
+  "counts": {
+    "tool_calls": 11,
+    "read_file_calls": 4,
+    "search_calls": 5
+  }
+}

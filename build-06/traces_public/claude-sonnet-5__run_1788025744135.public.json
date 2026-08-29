@@ -1,0 +1,61 @@
+{
+  "model": "claude-sonnet-5",
+  "steps": [
+    {
+      "tool": "list_files",
+      "input": {}
+    },
+    {
+      "tool": "search",
+      "input": {
+        "query": "python-backend/"
+      }
+    },
+    {
+      "tool": "list_files",
+      "input": {}
+    },
+    {
+      "tool": "search",
+      "input": {
+        "query": "FastAPI"
+      }
+    },
+    {
+      "tool": "search",
+      "input": {
+        "query": "uvicorn"
+      }
+    },
+    {
+      "tool": "read_file",
+      "input": {
+        "path": "python-backend/app.py"
+      }
+    },
+    {
+      "tool": "read_file",
+      "input": {
+        "path": "python-backend/main.py"
+      }
+    },
+    {
+      "tool": "read_file",
+      "input": {
+        "path": "python-backend/README.md"
+      }
+    },
+    {
+      "tool": "read_file",
+      "input": {
+        "path": "python-backend/api/routes.py"
+      }
+    }
+  ],
+  "final_answer": "## What the `python-backend/` service does\n\nThis directory is a **Python FastAPI microservice** called the **\"AI Essay Coach Backend\"**, part of a larger \"UniVerse\" platform (which also has a React client, a Node/Express server, and a database). Its job is to provide AI-powered features for college applicants, primarily around essay coaching, using OpenAI (and some Anthropic/Claude) integration.\n\nKey capabilities, based on `README.md` and `api/routes.py`:\n\n- **Essay analysis & coaching**: Full essay review feedback using a fine-tuned model, plus conversational follow-up Q&A (with conversation history/context management), and the ability to ask about a specific selected snippet of text within an essay.\n- **Intent classification**: Automatically decides whether an incoming message is a full review request or a Q&A follow-up.\n- **File upload support**: Accepts `.txt` and `.docx` essay uploads (via `utils/file_reader.py`).\n- **Extracurricular activity tools**: Services to \"polish\" activity descriptions, generate heatmap/gap analysis of a student's activities, and rank/prioritize them (`activity_polisher.py`, `activity_analyzer.py`, `activity_ranking.py`).\n- **Research chatbot**: A `/api/research/ask`-style endpoint for answering research-related questions (`services/research_chatbot.py`).\n- **Counselor insight embeddings**: An embedding pipeline to index counselor insights for retrieval (`services/embedding_pipeline.py`).\n- **Persistence**: Uses a Supabase client (`supabase_client.py`) to store conversations, messages, and related data.\n\nOverall architecture: `Client (React) \u2192 Python Backend (port 8000) \u2192 OpenAI/Anthropic APIs`, with Supabase used to persist conversation/message data.\n\n## Entry point\n\nThe service is started from **`python-backend/app.py`**, which creates and configures the FastAPI `app` (CORS, routers, root endpoint) and can be run directly (`python app.py`, using `uvicorn.run(\"app:app\", ...)` on port 8000).\n\nNote: there is also `python-backend/main.py`, but it's just a thin Railway deployment shim that does `from app import app` so Railway's platform can find the `app` object \u2014 the real application logic and startup configuration lives in `app.py`.",
+  "counts": {
+    "tool_calls": 9,
+    "read_file_calls": 4,
+    "search_calls": 3
+  }
+}

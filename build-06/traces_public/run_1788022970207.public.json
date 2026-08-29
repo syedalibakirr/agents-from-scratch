@@ -1,0 +1,93 @@
+{
+  "model": null,
+  "steps": [
+    {
+      "tool": "list_files",
+      "input": {}
+    },
+    {
+      "tool": "search",
+      "input": {
+        "query": "server/"
+      }
+    },
+    {
+      "tool": "search",
+      "input": {
+        "query": "python-backend"
+      }
+    },
+    {
+      "tool": "search",
+      "input": {
+        "query": "triptic-backend"
+      }
+    },
+    {
+      "tool": "read_file",
+      "input": {
+        "path": "CLAUDE.md"
+      }
+    },
+    {
+      "tool": "read_file",
+      "input": {
+        "path": "python-backend/README.md"
+      }
+    },
+    {
+      "tool": "read_file",
+      "input": {
+        "path": "triptic-backend/main.py"
+      }
+    },
+    {
+      "tool": "search",
+      "input": {
+        "query": "server"
+      }
+    },
+    {
+      "tool": "search",
+      "input": {
+        "query": "deploy"
+      }
+    },
+    {
+      "tool": "read_file",
+      "input": {
+        "path": "server/src/server.tsx"
+      }
+    },
+    {
+      "tool": "search",
+      "input": {
+        "query": "VITE_API"
+      }
+    },
+    {
+      "tool": "search",
+      "input": {
+        "query": "railway"
+      }
+    },
+    {
+      "tool": "search",
+      "input": {
+        "query": "python-backend/"
+      }
+    },
+    {
+      "tool": "read_file",
+      "input": {
+        "path": "triptic-backend/railway.json"
+      }
+    }
+  ],
+  "final_answer": "Based on the repo evidence, **python-backend** is the live backend.\n\nKey findings:\n- `CLAUDE.md` (the canonical \"single source of truth\" doc for this live production app, triptic.ai) lists the repo structure as `client/`, `server/`, `python-backend/`, `database/` \u2014 and explicitly labels `python-backend/` as \"\u2190 FastAPI AI backend.\"\n- The client's actual API calls (`dashboardAgentApi.ts`, `chatIntentApi.ts`, `researchApi.ts`, `counselorInsightsApi.ts`, `CounselorResearchWindow.tsx`) all point to `VITE_API_BASE_URL` defaulting to `http://localhost:8000`, which matches `python-backend`'s FastAPI service (its README documents it running on port 8000 and describes it as the AI engine talking to OpenAI/Supabase).\n- `server/` (Node/Express) is essentially unused scaffolding \u2014 `server/src/server.tsx` is literally a lecture-code placeholder (\"This file should set up the express server as shown in the lecture code\") with just a ping route, not wired into the frontend's API calls.\n- `triptic-backend/` is a small, separate FastAPI stub (`main.py` with only `ai_search`, `verification`, `match_score` routers and a `/health` check plus a `railway.json`), but nothing in the client code references it, and it's not mentioned in CLAUDE.md's architecture \u2014 it looks like a newer/experimental or parallel service rather than the one actually in production use.\n\nSo the frontend is wired to talk to **python-backend**, making it the live backend.",
+  "counts": {
+    "tool_calls": 14,
+    "read_file_calls": 5,
+    "search_calls": 8
+  }
+}

@@ -1,0 +1,79 @@
+{
+  "model": "claude-sonnet-5",
+  "steps": [
+    {
+      "tool": "list_files",
+      "input": {}
+    },
+    {
+      "tool": "search",
+      "input": {
+        "query": "python-backend"
+      }
+    },
+    {
+      "tool": "list_files",
+      "input": {}
+    },
+    {
+      "tool": "search",
+      "input": {
+        "query": "python-backend/main.py"
+      }
+    },
+    {
+      "tool": "search",
+      "input": {
+        "query": "uvicorn"
+      }
+    },
+    {
+      "tool": "read_file",
+      "input": {
+        "path": "python-backend/app.py"
+      }
+    },
+    {
+      "tool": "read_file",
+      "input": {
+        "path": "python-backend/README.md"
+      }
+    },
+    {
+      "tool": "search",
+      "input": {
+        "query": "python-backend/api/routes.py"
+      }
+    },
+    {
+      "tool": "read_file",
+      "input": {
+        "path": "python-backend/config.py"
+      }
+    },
+    {
+      "tool": "read_file",
+      "input": {
+        "path": "python-backend/api/routes.py"
+      }
+    },
+    {
+      "tool": "search",
+      "input": {
+        "query": "@router."
+      }
+    },
+    {
+      "tool": "read_file",
+      "input": {
+        "path": "python-backend/README.md"
+      }
+    }
+  ],
+  "final_answer": "I now have enough information to answer.\n\n## What the `python-backend/` service does\n\nThis is a **Python FastAPI microservice** (the \"AI Essay Coach Backend\") that forms the AI engine of the larger \"UniVerse\" platform. It sits between the React client and OpenAI/Anthropic APIs, and stores data in Supabase. Its responsibilities, based on `api/routes.py` and the `services/` modules, include:\n\n- **Essay coaching**: analyzing full essays with a fine-tuned GPT-3.5 model, answering conversational follow-up questions (GPT-4o-mini), and handling in-text/selected-text queries, plus file uploads (`.txt`/`.docx`) (`/api/essay/analyze`, `/api/essay/upload`).\n- **Intent classification** to route requests between full essay review and Q&A (`services/intent_classifier.py`, `services/chatbot.py`, `services/conversation.py`).\n- **College recommendations**: a ML-based college recommender and acceptance-probability recalculation (`/api/colleges/recommend`, `/api/colleges/recalculate-acceptance`).\n- **Extracurricular activity tools**: polishing activity descriptions, generating \"heatmap\"/gap analysis, and ranking/prioritizing activities (`/api/activity/polish`, `/api/activity/analyze`, `/api/activity/rank`).\n- **Student context and dashboard summaries** (`/api/student/context`, `/api/dashboard/summary`).\n- **Research chatbot** for counselors, with conversation history and embedding-based indexing of counselor insights (`/api/research/ask`, `/api/counselor/research/*`, embedding refresh endpoints).\n\nIt uses OpenAI (and optionally Anthropic) API keys, connects to Supabase (`supabase_client.py`), and exposes all endpoints under an `/api` prefix via a FastAPI `APIRouter`, with CORS configured for the frontend.\n\n## Entry point\n\nThe service is started from **`python-backend/app.py`**, which creates the FastAPI `app`, wires in the CORS middleware and the `api/routes.py` router, and (when run directly) launches it via `uvicorn.run(\"app:app\", host=\"0.0.0.0\", port=8000, reload=True)`.",
+  "counts": {
+    "tool_calls": 12,
+    "read_file_calls": 5,
+    "search_calls": 5
+  }
+}

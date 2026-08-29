@@ -1,0 +1,87 @@
+{
+  "model": "claude-opus-5",
+  "steps": [
+    {
+      "tool": "list_files",
+      "input": {}
+    },
+    {
+      "tool": "search",
+      "input": {
+        "query": "python-backend/"
+      }
+    },
+    {
+      "tool": "search",
+      "input": {
+        "query": "python-backend"
+      }
+    },
+    {
+      "tool": "search",
+      "input": {
+        "query": "FastAPI("
+      }
+    },
+    {
+      "tool": "search",
+      "input": {
+        "query": "uvicorn"
+      }
+    },
+    {
+      "tool": "read_file",
+      "input": {
+        "path": "python-backend/app.py"
+      }
+    },
+    {
+      "tool": "read_file",
+      "input": {
+        "path": "python-backend/README.md"
+      }
+    },
+    {
+      "tool": "read_file",
+      "input": {
+        "path": "python-backend/api/routes.py"
+      }
+    },
+    {
+      "tool": "read_file",
+      "input": {
+        "path": "python-backend/config.py"
+      }
+    },
+    {
+      "tool": "search",
+      "input": {
+        "query": "@router."
+      }
+    },
+    {
+      "tool": "read_file",
+      "input": {
+        "path": "python-backend/QUICKSTART.md"
+      }
+    },
+    {
+      "tool": "read_file",
+      "input": {
+        "path": "python-backend/requirements.txt"
+      }
+    },
+    {
+      "tool": "search",
+      "input": {
+        "query": "def get_research_response"
+      }
+    }
+  ],
+  "final_answer": "# What `python-backend/` Does\n\nIt's a **Python FastAPI microservice** that serves as the AI engine for a college-admissions platform (\"UniVerse\"). It sits between the React client and the AI providers (OpenAI / Anthropic) plus Supabase.\n\nPer its own README, the communication flow is:\n\n```\nClient (React) \u2192 Python Backend (port 8000) \u2192 OpenAI API\n     \u2193\nSupabase (store conversations & messages)\n```\n\n## Core capabilities\n\n**1. AI essay coaching** (the service's original purpose \u2014 `app.py` titles it \"AI Essay Coach Backend\")\n- `POST /api/essay/analyze` \u2014 full essay review via a **fine-tuned GPT-3.5 model** (`ft:gpt-3.5-turbo-0125:pal-ai::CXCkJfDi`), plus conversational Q&A via `gpt-4o-mini`\n- `POST /api/essay/upload` \u2014 accepts `.txt` and `.docx` uploads\n- Supporting services: intent classification (routes between full review and Q&A), conversation orchestration with token-based history pruning, and in-text selection queries (ask about a highlighted passage)\n\n**2. College recommendation**\n- `POST /api/colleges/recommend` \u2014 an ML recommender (`college_recommender/` with pandas/numpy/scikit-learn) that scores and ranks colleges\n- `POST /api/colleges/recalculate-acceptance`\n\n**3. Extracurricular activity tools**\n- `/api/activity/polish` (rewrite descriptions), `/api/activity/analyze` (heatmap + gap analysis), `/api/activity/rank` (prioritization)\n\n**4. Research chatbot + RAG**\n- `POST /api/research/ask`, with counselor chat history endpoints (`/api/counselor/research/messages`, `DELETE /api/counselor/research/history`)\n- An embedding pipeline indexing counselor insights, essays, and activities into `vector(1536)` Supabase tables \u2014 refresh endpoints exist for each\n\n**5. Student context & dashboard**\n- `/api/student/context`, `/api/student/counselor-insights`, `/api/dashboard/summary` (+ refresh)\n- `/api/health` for health checks\n\n## Notable design details\n- Model selection is env-configurable via **LiteLLM** (`RESEARCH_CHAT_MODEL_ID`, e.g. `openai/gpt-4o` or `anthropic/claude-sonnet-4-6`) so providers can be swapped with no code changes.\n- API keys are optional and degrade gracefully \u2014 `config.py` warns rather than crashes if `OPENAI_API_KEY` or `ANTHROPIC_API_KEY` are missing, since the ML recommender doesn't need them.\n- All routes are mounted under the `/api` prefix, with CORS configured from `CORS_ORIGINS`.\n\n# The file that starts it\n\n**`python-backend/app.py`**\n\nIt constructs the `FastAPI` app, adds CORS middleware, includes the router under `/api`, defines the `/",
+  "counts": {
+    "tool_calls": 13,
+    "read_file_calls": 6,
+    "search_calls": 6
+  }
+}

@@ -1,0 +1,73 @@
+{
+  "model": "claude-sonnet-5",
+  "steps": [
+    {
+      "tool": "list_files",
+      "input": {}
+    },
+    {
+      "tool": "search",
+      "input": {
+        "query": "python-backend/"
+      }
+    },
+    {
+      "tool": "list_files",
+      "input": {}
+    },
+    {
+      "tool": "search",
+      "input": {
+        "query": "uvicorn"
+      }
+    },
+    {
+      "tool": "search",
+      "input": {
+        "query": "FastAPI("
+      }
+    },
+    {
+      "tool": "read_file",
+      "input": {
+        "path": "python-backend/app.py"
+      }
+    },
+    {
+      "tool": "read_file",
+      "input": {
+        "path": "python-backend/README.md"
+      }
+    },
+    {
+      "tool": "read_file",
+      "input": {
+        "path": "python-backend/config.py"
+      }
+    },
+    {
+      "tool": "read_file",
+      "input": {
+        "path": "python-backend/api/routes.py"
+      }
+    },
+    {
+      "tool": "search",
+      "input": {
+        "query": "@router.post"
+      }
+    },
+    {
+      "tool": "search",
+      "input": {
+        "query": "college_recommender"
+      }
+    }
+  ],
+  "final_answer": "Based on the code under `python-backend/`, here's what this backend does:\n\n## Overview\n\n`python-backend/` is a **Python FastAPI microservice** (part of a larger \"UniVerse\" platform, alongside a Node/Express `server/` and a React `client/`, though those live outside this folder). It is the platform's **AI engine**, providing a REST API that the main app calls for AI/ML-powered college-admissions features. It talks to OpenAI (and optionally Anthropic) for language-model work, and to Supabase (Postgres) for storing/reading data (essays, activities, embeddings, conversations, etc.).\n\n### Entry point\n\n**`python-backend/app.py`** starts the service. It:\n- Creates the `FastAPI` app instance (`app = FastAPI(...)`)\n- Adds CORS middleware (allowed origins from `config.CORS_ORIGINS`)\n- Mounts all endpoints from `api/routes.py` under the `/api` prefix\n- Exposes a root `/` info endpoint\n- When run directly (`python app.py`), launches it via `uvicorn.run(\"app:app\", host=\"0.0.0.0\", port=8000, reload=True)` \u2014 i.e., it serves on port 8000.\n\n### Configuration\n\n`python-backend/config.py` loads environment variables (`.env`) for API keys (`OPENAI_API_KEY`, `ANTHROPIC_API_KEY`), model IDs (a fine-tuned GPT-3.5 model for essay analysis, `gpt-4o-mini` for chat/intent classification, a configurable model for a \"research chatbot\", and an embeddings model), CORS origins, and upload constraints.\n\n### Functionality (from `api/routes.py`)\n\nThe router (mounted at `/api`) exposes many capabilities, including:\n- **Essay coaching**: `/essay/analyze` (full review or Q&A feedback on essays via a fine-tuned model + intent classification), `/essay/upload` (parse `.txt`/`.docx` uploads), `/essay/compare-drafts`.\n- **College recommendations**: `/colleges/recommend` and `/colleges/recalculate-acceptance`, backed by a `college_recommender` module (ML-based matching using Supabase-loaded college data).\n- **Activities**: `/activity/polish` (rewrite/improve activity descriptions), `/activity/analyze` (heatmap/gap analysis), `/activity/rank` (prioritize extracurriculars).\n- **Research chatbot**: `/research/ask` \u2014 an AI Q&A assistant with summarization.\n- **Embeddings/RAG**: endpoints to refresh essay, activity, and counselor-insight embeddings for retrieval-augmented features.\n- **Dashboard summaries**, **counselor meeting-intent detection**, and **marketplace counselor matching** (`/marketplace/match-counselors`).\n\nSupporting code lives in `models/` (OpenAI client), `services/` (business logic: `essay_analyzer.py`, `chatbot.py`, `intent_classifier.py`, `conversation.",
+  "counts": {
+    "tool_calls": 11,
+    "read_file_calls": 4,
+    "search_calls": 5
+  }
+}

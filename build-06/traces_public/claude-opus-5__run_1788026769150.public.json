@@ -1,0 +1,111 @@
+{
+  "model": "claude-opus-5",
+  "steps": [
+    {
+      "tool": "list_files",
+      "input": {}
+    },
+    {
+      "tool": "search",
+      "input": {
+        "query": "python-backend/"
+      }
+    },
+    {
+      "tool": "search",
+      "input": {
+        "query": "uvicorn"
+      }
+    },
+    {
+      "tool": "search",
+      "input": {
+        "query": "FastAPI"
+      }
+    },
+    {
+      "tool": "read_file",
+      "input": {
+        "path": "python-backend/app.py"
+      }
+    },
+    {
+      "tool": "read_file",
+      "input": {
+        "path": "python-backend/main.py"
+      }
+    },
+    {
+      "tool": "read_file",
+      "input": {
+        "path": "python-backend/README.md"
+      }
+    },
+    {
+      "tool": "read_file",
+      "input": {
+        "path": "python-backend/api/routes.py"
+      }
+    },
+    {
+      "tool": "read_file",
+      "input": {
+        "path": "python-backend/config.py"
+      }
+    },
+    {
+      "tool": "read_file",
+      "input": {
+        "path": "python-backend/start.sh"
+      }
+    },
+    {
+      "tool": "search",
+      "input": {
+        "query": "@router."
+      }
+    },
+    {
+      "tool": "read_file",
+      "input": {
+        "path": "python-backend/requirements.txt"
+      }
+    },
+    {
+      "tool": "search",
+      "input": {
+        "query": "python-backend/services/"
+      }
+    },
+    {
+      "tool": "read_file",
+      "input": {
+        "path": "python-backend/QUICKSTART.md"
+      }
+    },
+    {
+      "tool": "search",
+      "input": {
+        "query": "python-backend/college_recommender"
+      }
+    },
+    {
+      "tool": "read_file",
+      "input": {
+        "path": "python-backend/CHANGELOG.md"
+      }
+    },
+    {
+      "tool": "search",
+      "input": {
+        "query": "from college_recommender"
+      }
+    }
+  ],
+  "final_answer": "## What `python-backend/` is\n\nIt's a **Python FastAPI microservice** \u2014 the \"AI engine\" of the UniVerse college-admissions platform. The React client (and/or the Node/Express `server/`) calls it over HTTP on port 8000; it in turn calls OpenAI / Anthropic (via `httpx` and LiteLLM) and reads/writes Supabase.\n\n**Main capabilities** (from `app.py`, `api/routes.py`, `config.py`, `README.md`, `CHANGELOG.md`):\n\n- **AI essay coaching** (`services/essay_analyzer.py`, `chatbot.py`, `intent_classifier.py`, `conversation.py`)\n  - `POST /api/essay/analyze` \u2014 full essay review using a fine-tuned GPT-3.5 model, or conversational follow-up Q&A with GPT-4o-mini\n  - Rule-based intent classification routes between \"full review\" and \"question\"\n  - v2.0 **in-text selection**: ask questions about a highlighted passage (`selected_text`, framed with `[START_SELECTION]\u2026[END_SELECTION]`)\n  - Conversation summarization/history pruning (`utils/summarizer.py`) to stay within token limits\n  - `POST /api/essay/upload` \u2014 accepts `.txt`/`.docx` uploads (`utils/file_reader.py`, `python-docx`)\n- **ML college recommender** (`college_recommender/` package: `data_loading.py`, `scoring.py`, `pipeline.py`, `acceptance.py`, using pandas/numpy/scikit-learn over Supabase data)\n  - `POST /api/colleges/recommend`, `POST /api/colleges/recalculate-acceptance`\n- **Activities tooling** \u2014 `POST /api/activity/polish`, `/api/activity/analyze` (heatmap + gap analysis), `/api/activity/rank`\n- **Research chatbot + RAG** \u2014 `POST /api/research/ask`, counselor message history endpoints, and an embeddings pipeline (`services/embedding_pipeline.py`) that indexes colleges, essays, activities, and counselor insights into pgvector tables\n- **Student/dashboard context** \u2014 `GET /api/student/context`, `GET /api/dashboard/summary` (+ refresh), plus marketplace/counselor AI search powered by the Anthropic key\n- Plus CORS config, a `/` info route, and `GET /api/health`\n\n## The file that starts it\n\n**`python-backend/app.py`** \u2014 it creates the `FastAPI` app, adds CORS, mounts `api/routes.py` under `/api`, and runs `uvicorn.run(\"app:app\", host=\"0.0.0.0\", port=8000)` under `if __name__ == \"__main__\"`. `start.sh` and `QUICKSTART.md` both launch it with `python app.py`.\n\n(Note: `python-backend/main.py` is just a thin deployment wrapper for Railway that does `from app import app`.)",
+  "counts": {
+    "tool_calls": 17,
+    "read_file_calls": 9,
+    "search_calls": 7
+  }
+}

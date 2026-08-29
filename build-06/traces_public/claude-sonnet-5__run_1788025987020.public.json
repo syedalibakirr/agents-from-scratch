@@ -1,0 +1,57 @@
+{
+  "model": "claude-sonnet-5",
+  "steps": [
+    {
+      "tool": "list_files",
+      "input": {}
+    },
+    {
+      "tool": "search",
+      "input": {
+        "query": "python-backend"
+      }
+    },
+    {
+      "tool": "search",
+      "input": {
+        "query": "uvicorn"
+      }
+    },
+    {
+      "tool": "read_file",
+      "input": {
+        "path": "python-backend"
+      }
+    },
+    {
+      "tool": "read_file",
+      "input": {
+        "path": "python-backend/app.py"
+      }
+    },
+    {
+      "tool": "read_file",
+      "input": {
+        "path": "python-backend/README.md"
+      }
+    },
+    {
+      "tool": "read_file",
+      "input": {
+        "path": "python-backend/api/routes.py"
+      }
+    },
+    {
+      "tool": "read_file",
+      "input": {
+        "path": "python-backend/config.py"
+      }
+    }
+  ],
+  "final_answer": "I have enough information from `python-backend/` to answer.\n\n## What the `python-backend/` service does\n\nIt's a **Python FastAPI microservice** (part of a larger \"UniVerse\" platform, alongside a React client and Node/Express server) that provides the **AI-powered features** of a college-admissions app. Based on `app.py`, `config.py`, `api/routes.py`, and `README.md`, it handles:\n\n- **AI Essay Coaching**\n  - Full essay analysis/feedback using a fine-tuned GPT-3.5 model (`FINE_TUNED_MODEL_ID`)\n  - Conversational follow-up Q&A using GPT-4o-mini, with conversation history and intent classification (routing between \"full review\" and \"question\" modes)\n  - In-text selection queries (asking about specific highlighted portions of an essay)\n  - File upload support for `.txt`/`.docx` essays\n  - Token/context management for pruning long conversation histories\n- **Activity Tools** \u2014 polishing activity descriptions, generating \"heatmap\" data and gap analysis, and ranking/prioritizing extracurricular activities (`services/activity_polisher.py`, `activity_analyzer.py`, `activity_ranking.py`)\n- **Research Chatbot** \u2014 a separate chat feature (`services/research_chatbot.py`) using a configurable model (via LiteLLM, default `openai/gpt-4o`) for research-style Q&A\n- **RAG/Embeddings pipeline** \u2014 indexing counselor insights and generating embeddings (`services/embedding_pipeline.py`) for semantic search, stored in vector columns in Supabase\n- **College Recommender** \u2014 an ML-based recommendation engine (`college_recommender/` package, referenced in config comments) that works independently of the OpenAI key\n- **Data persistence** \u2014 talks to Supabase (`supabase_client.py`) to store conversations, messages, and embeddings\n\nIt's structured as a **microservice**: the React client calls this Python backend (port 8000), which in turn calls OpenAI/Anthropic APIs and reads/writes to Supabase, e.g.:\n\n```\nClient (React) \u2192 Python Backend (port 8000) \u2192 OpenAI API\n     \u2193\n  Supabase (conversations/messages/embeddings)\n```\n\nConfiguration (`config.py`) loads API keys (`OPENAI_API_KEY`, `ANTHROPIC_API_KEY`) and model IDs from a `.env` file, with graceful warnings if keys are missing (essay analysis/marketplace search degrade, but the college recommender still works).\n\n## Entry point\n\nThe service is started from **`python-backend/app.py`**, which defines the FastAPI `app`, sets up CORS middleware, mounts the API router (`api/routes.py`) under the `/api` prefix, and \u2014 when run directly \u2014 launches it via `uvicorn.run(\"app:app\", host=\"0.0.0.0\", port=8000, reload=True)`. (It can also be started externally with `uvicorn app:app --reload --host 0.0.0.0 --port 8000` as noted in the README.)",
+  "counts": {
+    "tool_calls": 8,
+    "read_file_calls": 5,
+    "search_calls": 2
+  }
+}
