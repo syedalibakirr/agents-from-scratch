@@ -26,6 +26,7 @@ covering what it adds and what broke along the way.
 | 03 | 50 unused tools — does clutter degrade tool use? | [`build-03/`](./build-03) |
 | 04 | One sentence, three wordings — does rewording a tool description change behavior? | [`build-04/`](./build-04) |
 | 05 | 20 runs, one question — API default temperature vs. an explicit one, and what happens when the model rejects the parameter | [`build-05/`](./build-05) |
+| 06 | Every run had a trace and every run erased the last one — plus testing three claims made about Opus 5 | [`build-06/`](./build-06) |
 
 ## Notes
 
