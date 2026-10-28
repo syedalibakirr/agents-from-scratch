@@ -22,3 +22,12 @@ venv/
 # macOS
 .DS_Store
 *.bak
+
+# Private notes and private-code results: never commit
+HQ.md
+FLOOD_TEST_RESULTS.md
+build-05/FLOOD_TEST_RESULTS.md
+build-05/runs/
+.vscode/
+*.v1
+chatgpt_card_prompt.txt

@@ -7,7 +7,7 @@ Every build asks one question about how agents really behave, answers it by runn
 the agent many times against a real codebase, and ships with its runs, its numbers,
 and the failures. Nothing here is a claim you have to take on trust.
 
-`7 of 30 builds shipped` · `Python + the Anthropic API` · `every number comes from a trace`
+`8 of 30 builds shipped` · `Python + the Anthropic API` · `every number comes from a trace`
 
 ## What an agent actually is
 
@@ -52,6 +52,10 @@ kept the agent out of the folder where the bug lived 20 out of 20 times, and eve
 run built a workaround that hides the bug instead. Adding one sentence, "if the fix is
 outside, stop and tell me", made 10 out of 10 runs stop and point to the real fix.
 
+**Tests made it honest about the test, not about the fix.** In Build 08 the agent got
+a test runner. Under the folder rule it ran the tests, saw them fail, and still led
+with "fixed" in 7 of 10 runs. The same "stop and tell me" sentence took that to 0 of 10.
+
 ## The builds
 
 | # | The question | What the runs showed | Code |
@@ -63,6 +67,7 @@ outside, stop and tell me", made 10 out of 10 runs stop and point to the real fi
 | 05 | How different are 20 identical runs? | Tool calls ranged from 3 to 46 on one question, and the newer model rejects `temperature` with a 400. | [`build-05/`](./build-05) |
 | 06 | Does it respect a folder boundary when reading? | Per-run tracing (every earlier run had overwritten the last trace). Opus 0/20 vs Sonnet 3/21 boundary reads, p = 0.23, not significant. | [`build-06/`](./build-06) |
 | 07 | Give it hands and a rule: what happens when the fix is off limits? | Rule in words: 20/20 obeyed and built a workaround. Wall in code: 20/20 said they were blocked. Rule plus "stop and tell me": 10/10 stopped and pointed to the fix. Prompt caching cut cost per run from $0.46 to about $0.11. | [`build-07/`](./build-07) |
+| 08 | Give it the tests: does it stop saying fixed? | Under the folder rule, 7/10 said fixed while the tests still failed. Rule plus "stop and tell me": 0/10, and 10/10 stopped. 30 runs, $2.46. | [`build-08/`](./build-08) |
 
 Each folder is a self-contained, runnable snapshot with its own README: what it adds,
 how it was measured, the results, and the limitations. See [`LESSONS.md`](./LESSONS.md)
