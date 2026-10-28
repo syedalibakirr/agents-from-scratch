@@ -24,7 +24,7 @@ search({"query": "embedding"})
 
 **Final answer (verbatim):**
 ```
-The semantic search uses OpenAI's **text-embedding-3-small** model (via LiteLLM), and the `embedding` column in the `counselor_insights_embeddings` table is defined as `vector(1536)` — i.e., it expects 1536-dimensional vectors.
+[redacted: 227 chars about a private codebase]
 ```
 
 ---
@@ -49,7 +49,7 @@ search({"query": "embedding"})
 
 **Final answer (verbatim):**
 ```
-The semantic search uses OpenAI's **text-embedding-3-small** model (used via LiteLLM), and the database's `embedding` column is defined as `vector(1536)` — i.e., it expects 1536-dimensional vectors (see `database/migrations/create_counselor_insights_embeddings.sql`, line 26).
+[redacted: 276 chars about a private codebase]
 ```
 
 ---
@@ -74,7 +74,7 @@ search({"query": "embedding"})
 
 **Final answer (verbatim):**
 ```
-The semantic search uses OpenAI's **text-embedding-3-small** model (accessed via LiteLLM), and the `embedding` column in `counselor_insights_embeddings` is defined as `vector(1536)` — i.e., it expects 1536-dimensional vectors.
+[redacted: 226 chars about a private codebase]
 ```
 
 ---
@@ -100,7 +100,7 @@ search({"query": "embedding"})
 
 **Final answer (verbatim):**
 ```
-The semantic search uses OpenAI's **`text-embedding-3-small`** model, and the database's `embedding` column expects a vector of dimension **1536** (`vector(1536)`), as defined in `database/migrations/create_counselor_insights_embeddings.sql`.
+[redacted: 242 chars about a private codebase]
 ```
 
 ---
@@ -125,7 +125,7 @@ search({"query": "embedding"})
 
 **Final answer (verbatim):**
 ```
-The semantic search uses OpenAI's **`text-embedding-3-small`** model, and the database column expects a **1536-dimension vector** (`embedding vector(1536)`), as defined in `database/migrations/create_counselor_insights_embeddings.sql`.
+[redacted: 235 chars about a private codebase]
 ```
 
 ---
@@ -150,7 +150,7 @@ search({"query": "embedding"})
 
 **Final answer (verbatim):**
 ```
-The semantic search uses OpenAI's **text-embedding-3-small** model (via LiteLLM), and the database column `embedding` in `counselor_insights_embeddings` is defined as `vector(1536)` — i.e., it expects 1536-dimensional vectors.
+[redacted: 226 chars about a private codebase]
 ```
 
 ---
@@ -175,7 +175,7 @@ search({"query": "embedding"})
 
 **Final answer (verbatim):**
 ```
-The semantic search uses OpenAI's **text-embedding-3-small** model, and the database column stores it as `vector(1536)` — i.e., a 1536-dimensional embedding.
+[redacted: 157 chars about a private codebase]
 ```
 
 ---
@@ -201,7 +201,7 @@ list_files({})
 
 **Final answer (verbatim):**
 ```
-The semantic search uses OpenAI's **text-embedding-3-small** model, and the database column (`embedding` in `counselor_insights_embeddings`) expects a **`vector(1536)`** dimension.
+[redacted: 180 chars about a private codebase]
 ```
 
 ---
@@ -226,7 +226,7 @@ search({"query": "embedding"})
 
 **Final answer (verbatim):**
 ```
-The semantic search uses **OpenAI's `text-embedding-3-small`** model (accessed via LiteLLM), and the vector column in the database is defined as **`vector(1536)`** (see `counselor_insights_embeddings.embedding` in `database/migrations/create_counselor_insights_embeddings.sql`), matching that model's 1536-dimensional output.
+[redacted: 325 chars about a private codebase]
 ```
 
 ---
@@ -252,15 +252,7 @@ search({"query": "text-embedding-3-small"})
 
 **Final answer (verbatim):**
 ```
-The semantic search uses OpenAI's **`text-embedding-3-small`** model (configured via `EMBEDDINGS_MODEL_ID` in `python-backend/config.py`, defaulting to that model, accessed through LiteLLM).
-
-The corresponding database column expects a **1536-dimensional vector** — e.g., in `database/migrations/create_counselor_insights_embeddings.sql`:
-
-```sql
-embedding vector(1536) NOT NULL
-```
-
-This matches the 1536-dimension output of `text-embedding-3-small`, as noted in `python-backend/models/ai_models.py`.
+[redacted: 501 chars about a private codebase]
 ```
 
 ---
@@ -285,7 +277,7 @@ search({"query": "BroadcastChannel"})
 
 **Final answer (verbatim):**
 ```
-The BroadcastChannel is named **`triptic-auth-sync`**.
+[redacted: 54 chars about a private codebase]
 ```
 
 ---
@@ -310,7 +302,7 @@ search({"query": "BroadcastChannel"})
 
 **Final answer (verbatim):**
 ```
-The BroadcastChannel is named **`triptic-auth-sync`**.
+[redacted: 54 chars about a private codebase]
 ```
 
 ---
@@ -335,7 +327,7 @@ search({"query": "BroadcastChannel"})
 
 **Final answer (verbatim):**
 ```
-The BroadcastChannel used to sync auth across tabs is named **`triptic-auth-sync`**.
+[redacted: 84 chars about a private codebase]
 ```
 
 ---
@@ -360,7 +352,7 @@ search({"query": "BroadcastChannel"})
 
 **Final answer (verbatim):**
 ```
-The BroadcastChannel used to sync auth state across tabs is named **`triptic-auth-sync`**.
+[redacted: 90 chars about a private codebase]
 ```
 
 ---
@@ -385,7 +377,7 @@ search({"query": "BroadcastChannel"})
 
 **Final answer (verbatim):**
 ```
-The BroadcastChannel is named **`triptic-auth-sync`**.
+[redacted: 54 chars about a private codebase]
 ```
 
 ---
@@ -410,7 +402,7 @@ search({"query": "BroadcastChannel"})
 
 **Final answer (verbatim):**
 ```
-The BroadcastChannel used to sync auth across tabs is named **`triptic-auth-sync`**.
+[redacted: 84 chars about a private codebase]
 ```
 
 ---
@@ -435,7 +427,7 @@ search({"query": "BroadcastChannel"})
 
 **Final answer (verbatim):**
 ```
-The BroadcastChannel used to sync auth across tabs is named **`triptic-auth-sync`**.
+[redacted: 84 chars about a private codebase]
 ```
 
 ---
@@ -460,7 +452,7 @@ search({"query": "BroadcastChannel"})
 
 **Final answer (verbatim):**
 ```
-The BroadcastChannel is named **`triptic-auth-sync`**.
+[redacted: 54 chars about a private codebase]
 ```
 
 ---
@@ -485,7 +477,7 @@ search({"query": "BroadcastChannel"})
 
 **Final answer (verbatim):**
 ```
-The BroadcastChannel is named **`triptic-auth-sync`**.
+[redacted: 54 chars about a private codebase]
 ```
 
 ---
@@ -510,7 +502,7 @@ search({"query": "BroadcastChannel"})
 
 **Final answer (verbatim):**
 ```
-The BroadcastChannel is named **`triptic-auth-sync`**.
+[redacted: 54 chars about a private codebase]
 ```
 
 ---

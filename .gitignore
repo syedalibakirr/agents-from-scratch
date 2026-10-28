@@ -31,3 +31,7 @@ build-05/runs/
 .vscode/
 *.v1
 chatgpt_card_prompt.txt
+
+# Private originals with full answers about a private codebase (public copies are scrubbed)
+build-04/runs_private/
+build-04/traces_private.jsonl

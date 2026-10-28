@@ -24,11 +24,7 @@ search({"query": "embedding"})
 
 **Final answer (verbatim):**
 ```
-The semantic search uses **OpenAI's `text-embedding-3-small`** model (used via LiteLLM alongside GPT-4o), and the database column is defined as **`vector(1536)`** — expecting 1536-dimensional embedding vectors.
-
-This is confirmed in:
-- `database/migrations/create_counselor_insights_embeddings.sql`: `embedding vector(1536) NOT NULL`
-- `README.md` and `CLAUDE.md`: reference `text-embedding-3-small` as the embedding model
+[redacted: 422 chars about a private codebase]
 ```
 
 ---
@@ -55,12 +51,7 @@ search({"query": "vector("})
 
 **Final answer (verbatim):**
 ```
-The semantic search in this codebase uses OpenAI's **`text-embedding-3-small`** model (accessed via LiteLLM), and the database vector columns (e.g., `counselor_insights_embeddings.embedding`, `college_embeddings`, `student_activity_embeddings`) expect a **`vector(1536)`** dimension — i.e., 1536-dimensional embeddings.
-
-This is confirmed in multiple places:
-- `README.md` / `CLAUDE.md`: list the AI stack as "OpenAI GPT-4o via LiteLLM, text-embedding-3-small"
-- `database/migrations/create_counselor_insights_embeddings.sql`: defines `embedding vector(1536) NOT NULL`
-- `python-backend/config.py`: notes "Must match the vector(1536) dimension in college_embeddings and student_activity_embeddings tables"
+[redacted: 705 chars about a private codebase]
 ```
 
 ---
@@ -86,17 +77,7 @@ search({"query": "vector"})
 
 **Final answer (verbatim):**
 ```
-The semantic search uses **OpenAI's `text-embedding-3-small`** model, and the vector columns are defined as **`vector(1536)`** (1536 dimensions) in the PostgreSQL/pgvector schema.
-
-This is confirmed across multiple places in the codebase:
-
-- **README.md**: Lists `text-embedding-3-small` as the embedding model under the AI stack.
-- **CLAUDE.md**: Table entry — `AI | OpenAI GPT-4o via LiteLLM | text-embedding-3-small`.
-- **`python-backend/models/ai_models.py`**: "Uses text-embedding-3-small (1536 dimensions) to match the vector columns."
-- **`python-backend/config.py`**: Comment noting the config value "Must match the `vector(1536)` dimension in `college_embeddings` and `student_activity_embeddings` tables."
-- **`database/migrations/create_counselor_insights_embeddings.sql`**: Defines `embedding vector(1536) NOT NULL` and the matching RPC function parameter `query_embedding vector(1536)`.
-
-So consistently, embeddings are generated with `text-embedding-3-small` and stored/queried against `vector(1536)` columns using pgvector (with cosine similarity via `ivfflat` indexes and `vector_cosine_ops`).
+[redacted: 1109 chars about a private codebase]
 ```
 
 ---
@@ -123,7 +104,7 @@ search({"query": "vector("})
 
 **Final answer (verbatim):**
 ```
-The semantic search uses OpenAI's **text-embedding-3-small** model (accessed via LiteLLM, alongside GPT-4o for the AI features), and the vector column is defined as `vector(1536)` — a 1536-dimensional embedding, consistent across tables like `counselor_insights_embeddings`, `college_embeddings`, and `student_activity_embeddings`.
+[redacted: 331 chars about a private codebase]
 ```
 
 ---
@@ -150,15 +131,7 @@ search({"query": "vector("})
 
 **Final answer (verbatim):**
 ```
-The semantic search uses OpenAI's **text-embedding-3-small** model, and the vector column is defined as **vector(1536)** — i.e., 1536-dimensional embeddings.
-
-This is confirmed across multiple places in the repo:
-- `README.md`: "AI: OpenAI (GPT-4o via LiteLLM, text-embedding-3-small)"
-- `CLAUDE.md`: same model listed for AI/embeddings
-- `database/migrations/create_counselor_insights_embeddings.sql`: `embedding vector(1536) NOT NULL` and the RPC function parameter `query_embedding vector(1536)`
-- `python-backend/config.py`: comment noting "Must match the vector(1536) dimension in college_embeddings and student_activity_embeddings tables"
-
-So the embedding dimension (1536) matches the native output size of OpenAI's `text-embedding-3-small` model, and this is consistently enforced across the `counselor_insights_embeddings`, `college_embeddings`, and `student_activity_embeddings` tables.
+[redacted: 896 chars about a private codebase]
 ```
 
 ---
@@ -184,7 +157,7 @@ search({"query": "vector"})
 
 **Final answer (verbatim):**
 ```
-The semantic search uses OpenAI's **text-embedding-3-small** model, and the vector column expects a dimension of **1536** (i.e., `vector(1536)` in the pgvector-backed PostgreSQL/Supabase tables like `counselor_insights_embeddings`, `college_embeddings`, and `student_activity_embeddings`).
+[redacted: 289 chars about a private codebase]
 ```
 
 ---
@@ -209,7 +182,7 @@ search({"query": "embedding"})
 
 **Final answer (verbatim):**
 ```
-The semantic search uses OpenAI's **text-embedding-3-small** model (accessed via LiteLLM), and the `embedding` column in the `counselor_insights_embeddings` table is defined as `vector(1536)` — expecting **1536-dimensional** vectors.
+[redacted: 233 chars about a private codebase]
 ```
 
 ---
@@ -235,12 +208,7 @@ search({"query": "vector("})
 
 **Final answer (verbatim):**
 ```
-The semantic search uses **OpenAI's `text-embedding-3-small`** model (used alongside GPT-4o via LiteLLM), and the database column is defined as **`vector(1536)`** — i.e., it expects 1536-dimensional embedding vectors.
-
-This is confirmed across multiple places in the repo:
-- `README.md` / `CLAUDE.md` list `text-embedding-3-small` as the embedding model.
-- `database/migrations/create_counselor_insights_embeddings.sql` defines `embedding vector(1536) NOT NULL` and a matching `query_embedding vector(1536)` parameter for the RPC search function.
-- `python-backend/config.py` notes that the dimension must match `vector(1536)` used in the `college_embeddings` and `student_activity_embeddings` tables as well.
+[redacted: 709 chars about a private codebase]
 ```
 
 ---
@@ -266,7 +234,7 @@ search({"query": "vector("})
 
 **Final answer (verbatim):**
 ```
-The semantic search uses **OpenAI's `text-embedding-3-small`** model (used via LiteLLM alongside GPT-4o for the AI features), and the corresponding database columns are typed as **`vector(1536)`** — i.e., they expect 1536-dimensional embeddings, consistent across tables like `counselor_insights_embeddings`, `college_embeddings`, and `student_activity_embeddings`.
+[redacted: 365 chars about a private codebase]
 ```
 
 ---
@@ -292,12 +260,7 @@ search({"query": "vector("})
 
 **Final answer (verbatim):**
 ```
-The semantic search uses OpenAI's **text-embedding-3-small** model (used alongside GPT-4o via LiteLLM for the AI stack), and the vector column is defined as **vector(1536)** — i.e., it expects 1536-dimensional embeddings.
-
-This is confirmed in multiple places:
-- `README.md` / `CLAUDE.md`: list **text-embedding-3-small** as the embedding model.
-- `database/migrations/create_counselor_insights_embeddings.sql`: defines `embedding vector(1536) NOT NULL` and the `match_counselor_insights_embeddings` RPC uses `query_embedding vector(1536)`.
-- `python-backend/config.py`: notes that the dimension must match `vector(1536)` used in the `college_embeddings` and `student_activity_embeddings` tables as well.
+[redacted: 704 chars about a private codebase]
 ```
 
 ---
@@ -324,7 +287,7 @@ search({"query": "vector("})
 
 **Final answer (verbatim):**
 ```
-The semantic search uses OpenAI's **text-embedding-3-small** model (accessed via LiteLLM), and the corresponding database columns expect a **vector(1536)** dimension — confirmed in `create_counselor_insights_embeddings.sql`, `college_embeddings`, and `student_activity_embeddings` tables, matching the 1536-dimensional output of `text-embedding-3-small`.
+[redacted: 354 chars about a private codebase]
 ```
 
 ---
@@ -349,7 +312,7 @@ search({"query": "embedding"})
 
 **Final answer (verbatim):**
 ```
-The semantic search uses OpenAI's **text-embedding-3-small** model, and the database column expects a vector dimension of **1536** (`embedding vector(1536)` in `counselor_insights_embeddings`).
+[redacted: 193 chars about a private codebase]
 ```
 
 ---
@@ -375,12 +338,7 @@ search({"query": "vector("})
 
 **Final answer (verbatim):**
 ```
-The semantic search uses OpenAI's **text-embedding-3-small** model (used alongside GPT-4o via LiteLLM), and the database vector column is defined as **`vector(1536)`** — i.e., it expects 1536-dimensional embeddings, matching the output size of `text-embedding-3-small`.
-
-This is confirmed across multiple places:
-- `README.md` / `CLAUDE.md`: list `text-embedding-3-small` as the embedding model.
-- `database/migrations/create_counselor_insights_embeddings.sql`: defines `embedding vector(1536) NOT NULL` for the `counselor_insights_embeddings` table, and the `match_counselor_insights_embeddings` RPC function takes `query_embedding vector(1536)`.
-- `python-backend/config.py`: comments note the dimension "must match the `vector(1536)` dimension in `college_embeddings` and `student_activity_embeddings` tables," confirming the same 1536-dimensional standard is used consistently across the embedding tables.
+[redacted: 909 chars about a private codebase]
 ```
 
 ---
@@ -406,9 +364,7 @@ search({"query": "vector("})
 
 **Final answer (verbatim):**
 ```
-The semantic search uses OpenAI's **text-embedding-3-small** model (per README.md and CLAUDE.md, used via LiteLLM alongside GPT-4o).
-
-The vector column is defined as **`vector(1536)`** — i.e., it expects 1536-dimensional embeddings, consistent across tables like `counselor_insights_embeddings`, `college_embeddings`, and `student_activity_embeddings`.
+[redacted: 352 chars about a private codebase]
 ```
 
 ---
@@ -435,14 +391,7 @@ read_file({"path": "python-backend/config.py"})
 
 **Final answer (verbatim):**
 ```
-The semantic search in this repo uses **OpenAI's `text-embedding-3-small`** model (confirmed in `README.md`, `CLAUDE.md`, and referenced as `EMBEDDINGS_MODEL_ID` in `python-backend/config.py`).
-
-The corresponding database columns are defined as **`vector(1536)`** — i.e., they expect 1536-dimensional embeddings. This is seen in:
-- `database/migrations/create_counselor_insights_embeddings.sql` — `embedding vector(1536) NOT NULL`
-- The same 1536 dimension is also used for `college_embeddings` and `student_activity_embeddings` tables, per the comment in `config.py`:
-  > "Must match the vector(1536) dimension in college_embeddings and student_activity_embeddings tables"
-
-So: **model = text-embedding-3-small**, **dimension = 1536**.
+[redacted: 736 chars about a private codebase]
 ```
 
 ---
@@ -470,9 +419,7 @@ search({"query": "text-embedding"})
 
 **Final answer (verbatim):**
 ```
-The semantic search uses OpenAI's **`text-embedding-3-small`** model for generating embeddings (configured via `EMBEDDINGS_MODEL_ID` in `python-backend/config.py`, defaulting to `text-embedding-3-small`).
-
-The corresponding vector columns (e.g., in `counselor_insights_embeddings`, `college_embeddings`, and `student_activity_embeddings` tables) are defined as **`vector(1536)`**, i.e., they expect **1536-dimensional** embeddings, matching the output size of `text-embedding-3-small`.
+[redacted: 485 chars about a private codebase]
 ```
 
 ---
@@ -497,7 +444,7 @@ search({"query": "embedding"})
 
 **Final answer (verbatim):**
 ```
-The semantic search uses OpenAI's **text-embedding-3-small** model, and the corresponding database column (`embedding` in `counselor_insights_embeddings`) is defined as **`vector(1536)`** — i.e., it expects 1536-dimensional vectors.
+[redacted: 232 chars about a private codebase]
 ```
 
 ---
@@ -523,7 +470,7 @@ search({"query": "embedding"})
 
 **Final answer (verbatim):**
 ```
-The semantic search uses **OpenAI's `text-embedding-3-small`** model (via LiteLLM), and the database's `embedding` column is defined as `vector(1536)` — i.e., it expects 1536-dimensional vectors, matching that model's native output size.
+[redacted: 237 chars about a private codebase]
 ```
 
 ---
@@ -549,13 +496,7 @@ search({"query": "vector"})
 
 **Final answer (verbatim):**
 ```
-The semantic search uses OpenAI's **`text-embedding-3-small`** model, and the vector columns (e.g., `embedding` in `counselor_insights_embeddings`, `college_embeddings`, `student_activity_embeddings`, `student_essay_embeddings`) all expect a **1536-dimension** vector (`vector(1536)` in Postgres/pgvector).
-
-This is confirmed in multiple places:
-- `README.md` / `CLAUDE.md`: lists AI stack as "OpenAI GPT-4o via LiteLLM, text-embedding-3-small"
-- `database/migrations/create_counselor_insights_embeddings.sql`: `embedding vector(1536) NOT NULL`
-- `python-backend/config.py`: comment noting "Must match the vector(1536) dimension in college_embeddings and student_activity_embeddings tables"
-- `python-backend/models/ai_models.py`: "Uses text-embedding-3-small (1536 dimensions) to match the vector columns"
+[redacted: 806 chars about a private codebase]
 ```
 
 ---
@@ -581,12 +522,7 @@ read_file({"path": "database/migrations/create_counselor_insights_embeddings.sql
 
 **Final answer (verbatim):**
 ```
-Based on the repository:
-
-- **Embedding model**: `text-embedding-3-small` (OpenAI, accessed via LiteLLM)
-- **Vector dimension**: The `embedding` column in `counselor_insights_embeddings` is defined as `vector(1536)`, i.e., it expects 1536-dimensional vectors.
-
-This matches OpenAI's `text-embedding-3-small` model, whose default output dimensionality is 1536.
+[redacted: 359 chars about a private codebase]
 ```
 
 ---

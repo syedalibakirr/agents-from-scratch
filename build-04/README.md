@@ -1,122 +1,121 @@
-# Build 04 — one sentence, three wordings
+# Build 04: one sentence, three wordings
 
-Garry Tan (CEO of Y Combinator) has said that "a markdown file is an employee that
-will do the job perfectly every single time." This build tests a narrow version of
-that claim: does rewording one sentence in a markdown file change what an agent
-actually does?
+Change one sentence in a tool's description, keep everything else fixed, and ask
+the same question 20 times per wording. Does the agent behave differently?
 
-The agent's three tool descriptions live in `tools.md` (moved out of `agent.py`,
-which loads them at runtime via `load_descriptions()`). Everything else — the model,
-the loop, the two other tool descriptions, the question, the target repo — is held
-fixed. Only the `search` tool's description sentence changes, across three wordings,
-and the same question is asked 20 times per wording.
+It did. A rewording that kept the exact same meaning moved the agent from mostly
+one tool call to mostly several (14 of 20 runs used one call before, 4 of 20 after,
+p = 0.004). Dropping information from the sentence moved it in the same direction,
+but less clearly (p = 0.056).
 
-## Setup
+The prompt for this build was a line attributed to Garry Tan (CEO of Y Combinator),
+that "a markdown file is an employee that will do the job perfectly every single
+time." This tests a narrow version of it: does the wording of one sentence in a
+markdown file change what an agent does?
 
-- Agent: the same loop as build-01/build-03 (`agent.py`, unchanged), reading its 3
-  real tool descriptions from `tools.md` at startup.
-- Model: `claude-sonnet-5`, default temperature.
-- Condition: `clean` throughout (`FLOOD` unset — exactly 3 tools, no flood).
-- Question (Q2 from `run_test.py`'s question list): *"What embedding model does the
-  semantic search use, and what vector dimension does the column expect?"*
-- Target repo: a fixed external codebase (unrelated to this repo).
-- 20 runs per wording (condition B's first round of 10 had 1 crash, backfilled with
-  a second round of 10 — see Limitations).
-- Temperature: every run in all three conditions used the API default (1.0),
-  identical across A, B, and C, because no `temperature` parameter was passed to
-  `client.messages.create()` anywhere in this build's `agent.py`.
+## The setup
 
-## The three conditions
+The agent's three tool descriptions now live in `tools.md`, which `agent.py` loads
+at startup. Only the `search` tool's sentence changes:
 
-Only the `## search` line in `tools.md` changes between conditions. The full text of
-each wording is in `tools/`.
-
-| Condition | File | `search` description |
+| Condition | `search` description | File |
 |---|---|---|
-| A — original | [`tools/tools_A_original.md`](./tools/tools_A_original.md) | "Search the repo for a string. Returns matching lines." |
-| B — info dropped | [`tools/tools_B_info_dropped.md`](./tools/tools_B_info_dropped.md) | "Find text inside the project files." |
-| C — paraphrase | [`tools/tools_C_paraphrase.md`](./tools/tools_C_paraphrase.md) | "Searches the repo for a given string and returns the matching lines." |
+| A, original | "Search the repo for a string. Returns matching lines." | [`tools/tools_A_original.md`](./tools/tools_A_original.md) |
+| B, information dropped | "Find text inside the project files." | [`tools/tools_B_info_dropped.md`](./tools/tools_B_info_dropped.md) |
+| C, same meaning reworded | "Searches the repo for a given string and returns the matching lines." | [`tools/tools_C_paraphrase.md`](./tools/tools_C_paraphrase.md) |
 
-`tools.md` at the repo root is the file `agent.py` actually reads. To reproduce a
-condition, copy the matching file over it before running (see **Reproduce** below).
+Held fixed: the loop (Build 03's agent, `clean` condition, 3 tools), the other two
+tool descriptions, the target (a private production codebase, Triptic), and the
+question, Q2 from Build 03:
+
+> What embedding model does the semantic search use, and what vector dimension does
+> the column expect?
+
+Model: `claude-sonnet-5`, default temperature (no `temperature` is passed anywhere).
+20 runs per wording.
 
 ## Results
 
-Tool-call counts on Q2, per condition (from `analyze.py`):
+Numbers come from `analyze.py`, which reads every run in [`runs/`](./runs).
 
-| Condition | n | total calls | mean | min | max | >1 call | used `read_file` |
+| Condition | Runs | Total tool calls | Mean | Min | Max | More than 1 call | Used `read_file` |
 |---|---|---|---|---|---|---|---|
-| A — original | 20 | 27 | 1.35 | 1 | 3 | 6/20 | 0/20 |
-| B — info dropped | 19 | 41 | 2.16 | 1 | 4 | 12/19 | 6/19 |
-| C — paraphrase | 20 | 43 | 2.15 | 1 | 4 | 16/20 | 3/20 |
+| A, original | 20 | 27 | 1.35 | 1 | 3 | 6 of 20 | 0 of 20 |
+| B, information dropped | 19 | 41 | 2.16 | 1 | 4 | 12 of 19 | 6 of 19 |
+| C, same meaning reworded | 20 | 43 | 2.15 | 1 | 4 | 16 of 20 | 3 of 20 |
 
-Dropping the information in the description ("returns matching lines" →
-"find text") roughly doubled the average number of tool calls and pushed the agent
-to call `read_file` where it otherwise wouldn't (0/20 → 6/19). A same-meaning
-paraphrase (condition C) also raised the call count and `read_file` usage relative
-to A, despite carrying the same information as the original sentence.
+What happened:
 
-**Fisher's exact test** (two-tailed, `math.comb`-based, no scipy), on the split of
-1 tool call vs more than 1 tool call:
+- **Original wording.** The agent usually searched once and answered. It never
+  opened a file.
+- **Information dropped.** "Returns matching lines" became "find text". Average
+  calls went from 1.35 to 2.16, and 6 of 19 runs started opening files with
+  `read_file`, which no run did before.
+- **Same meaning, different words.** The sentence carried the same information as
+  the original, and the shift was larger: 16 of 20 runs made more than one call.
 
-- A vs B: A = (14, 6), B = (7, 12) → **p = 0.056**
-- A vs C: A = (14, 6), C = (4, 16) → **p = 0.004**
+The model does not read your intent. It reads the sentence, and two sentences that
+mean the same thing to a person can produce measurably different behaviour.
 
-The paraphrase (C) — which preserves the original sentence's information — shows a
-stronger, more significant shift away from 1-call runs than the info-dropped wording
-(B) does, on this split and this sample size.
+## Statistics, stated plainly
+
+Fisher's exact test, two-tailed, on runs with 1 call versus more than 1 call
+(implemented with `math.comb`, no scipy):
+
+- A vs B: A = (14, 6), B = (7, 12), p = 0.056. Not below 0.05.
+- A vs C: A = (14, 6), C = (4, 16), p = 0.004.
 
 ## Limitations
 
-This is one question, against one model, on one codebase, with 20 runs per
-condition. It is not a general law about tool descriptions — it's one repeatable
-observation that a single-sentence reword changed measured behavior on this setup.
-A different question, model, or codebase could show a different or absent effect.
-The A-vs-B result (p = 0.056) does not clear the conventional p < 0.05 threshold;
-only A-vs-C does.
+- One question, one model, one codebase, 20 runs per wording. This is one
+  repeatable observation, not a rule about tool descriptions.
+- Answer correctness was not scored; only tool-call behaviour was.
+- One run in B crashed with an Anthropic 529 "Overloaded" error before answering.
+  `analyze.py` excludes crashed and timed-out runs, so B has 19. B was backfilled
+  with a second batch of 10 to keep it close to 20.
+- `runs/B_info_dropped_round1.md` also contains 10 runs of a different question
+  (Q8); `analyze.py` counts Q2 only.
 
-One run in condition B's first round (10-run batch) failed with an Anthropic API
-529 "Overloaded" error, unrelated to the experiment itself — the agent crashed
-mid-run before producing a final answer. `analyze.py` excludes any run whose final
-answer contains "agent crashed" or "TIMED OUT", so this run is dropped from B's
-n=19 rather than counted as a 0-call or otherwise misleading data point. Condition
-B was backfilled with a second 10-run batch to keep its sample size close to A and
-C's 20.
+## Traces and privacy
+
+The target is a private codebase. The original run files, with the agent's full
+answers, are kept in `runs_private/` (gitignored). `make_public_runs.py` copies them
+into `runs/` with each answer replaced by its length. Tool calls, counts and wall
+times are unchanged, so `analyze.py` prints the same numbers on either folder.
+`traces.jsonl` is one sample trace kept to show the format, with tool outputs and
+the answer replaced by their length.
+
+## How to reproduce
+
+You need your own target repo; the codebase used here is private.
+
+```bash
+pip install anthropic
+export ANTHROPIC_API_KEY="your-api-key-here"   # placeholder, never commit a real key
+
+cd build-04
+cp tools/tools_A_original.md tools.md      # or tools_B_info_dropped.md / tools_C_paraphrase.md
+python run_test.py --q 2 --condition clean # run 20 times per wording
+```
+
+`run_test.py` appends each run to `FLOOD_TEST_RESULTS.md` (the name is left over
+from Build 03). Move each batch into `runs_private/` with the naming used in
+`analyze.py`, then:
+
+```bash
+python make_public_runs.py
+python analyze.py
+```
 
 ## What's here
 
 | Path | What it is |
 |---|---|
-| `agent.py` | The agent loop, unchanged from build-01/build-03. Reads tool descriptions from `tools.md`, reads `ANTHROPIC_API_KEY` from the environment. |
-| `run_test.py` | Runs `agent.py` once for a given question/condition against the fixed target repo and appends the result to a results file. |
-| `tools.md` | The tool descriptions `agent.py` actually loads at runtime. Swap in one of `tools/tools_*.md` to reproduce a condition. |
-| `tools/` | The three tested wordings of `tools.md`, one per condition. |
-| `runs/` | The 5 raw result batches (`A_original_round1.md`, `A_original_round2.md`, `B_info_dropped_round1.md`, `B_info_dropped_round2.md`, `C_paraphrase.md`), each a sequence of per-run sections with question, tool calls, and final answer. |
-| `analyze.py` | Parses `runs/`, filters to Q2, excludes crashed/timed-out runs, and prints the stats table and Fisher's exact test above. |
-| `traces.jsonl` | One sample raw trace, kept to show the trace format `agent.py` writes — not a full archive of every run. |
-
-## Reproduce
-
-```bash
-pip install anthropic
-export ANTHROPIC_API_KEY="your-key"
-cd build-04
-
-# pick a condition by swapping tools.md
-cp tools/tools_A_original.md tools.md      # or tools_B_info_dropped.md / tools_C_paraphrase.md
-
-python run_test.py --q 2 --condition clean
-```
-
-`run_test.py` appends each run to `FLOOD_TEST_RESULTS.md` (the filename is a
-leftover from build-03, which this script was copied from). Run it 10-20 times per
-condition and rename/move the accumulated file into `runs/` to reproduce the
-`runs/` naming convention used here. `run_test.py` does not grade answers — only
-`analyze.py`'s tool-call counts are analyzed above; answer correctness was not
-scored in this build.
-
-```bash
-python analyze.py
-```
-
-should print the results table and Fisher's exact test shown above.
+| `agent.py` | The Build 03 loop, reading its tool descriptions from `tools.md`. |
+| `tools.md` | The descriptions `agent.py` loads. Copy one of `tools/` over it to pick a wording. |
+| `tools/` | The three tested wordings. |
+| `run_test.py` | Runs the agent once and appends the run to a results file. |
+| `runs/` | The 5 run batches, answers redacted. |
+| `analyze.py` | Reads `runs/`, keeps Q2, drops crashed runs, prints the table and Fisher tests above. |
+| `make_public_runs.py` | Writes the redacted `runs/` and `traces.jsonl` from the private originals. |
+| `traces.jsonl` | One sample trace, outputs redacted, to show the trace format. |

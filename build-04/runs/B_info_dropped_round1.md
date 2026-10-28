@@ -25,7 +25,7 @@ search({"query": "vector("})
 
 **Final answer (verbatim):**
 ```
-The semantic search uses OpenAI's **text-embedding-3-small** model (used via LiteLLM alongside GPT-4o for the AI layer), and the database's vector column is defined as **`vector(1536)`** — a 1536-dimensional embedding, as seen in `create_counselor_insights_embeddings.sql` (`embedding vector(1536) NOT NULL`) and confirmed by `python-backend/config.py`, which notes this dimension must match across the `college_embeddings` and `student_activity_embeddings` tables as well.
+[redacted: 473 chars about a private codebase]
 ```
 
 ---
@@ -50,7 +50,7 @@ search({"query": "embedding"})
 
 **Final answer (verbatim):**
 ```
-The semantic search uses OpenAI's **text-embedding-3-small** model, and the vector column (`embedding` in `counselor_insights_embeddings`) is defined as `vector(1536)` — expecting 1536-dimensional embeddings.
+[redacted: 208 chars about a private codebase]
 ```
 
 ---
@@ -76,7 +76,7 @@ search({"query": "vector("})
 
 **Final answer (verbatim):**
 ```
-The semantic search uses OpenAI's **text-embedding-3-small** model (as used alongside GPT-4o via LiteLLM), and the embedding columns are defined as **`vector(1536)`** — i.e., 1536-dimensional vectors — across the relevant tables (`counselor_insights_embeddings`, `college_embeddings`, `student_activity_embeddings`).
+[redacted: 316 chars about a private codebase]
 ```
 
 ---
@@ -104,15 +104,7 @@ search({"query": "text-embedding-3-small"})
 
 **Final answer (verbatim):**
 ```
-The semantic search uses OpenAI's **text-embedding-3-small** model (configured via `EMBEDDINGS_MODEL_ID` in `python-backend/config.py`, defaulting to `"text-embedding-3-small"`).
-
-This matches the vector column definitions in the database, such as `counselor_insights_embeddings.embedding`, which is defined as:
-
-```sql
-embedding vector(1536) NOT NULL
-```
-
-So the expected/required vector dimension is **1536**, consistent with `text-embedding-3-small`'s native output size — as confirmed in `python-backend/models/ai_models.py`, which notes it uses "text-embedding-3-small (1536 dimensions) to match the vector columns."
+[redacted: 621 chars about a private codebase]
 ```
 
 ---
@@ -137,17 +129,7 @@ search({"query": "embedding"})
 
 **Final answer (verbatim):**
 ```
-(agent crashed, no final answer — stderr tail:
-am_cls=Stream[RawMessageStreamEvent],
-        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    )
-    ^
-  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/anthropic/_base_client.py", line 1536, in post
-    return cast(ResponseT, self.request(cast_to, opts, stream=stream, stream_cls=stream_cls))
-                           ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/anthropic/_base_client.py", line 1195, in request
-    raise self._make_status_error_from_response(response) from None
-anthropic.OverloadedError: Error code: 529 - {'type': 'error', 'error': {'type': 'overloaded_error', 'message': 'Overloaded'}, 'request_id': 'req_011CdztCT6HQtgEDuhfJGrjv'})
+(agent crashed, no final answer. Error details removed.)
 ```
 
 ---
@@ -172,7 +154,7 @@ search({"query": "embedding"})
 
 **Final answer (verbatim):**
 ```
-The semantic search uses OpenAI's **text-embedding-3-small** model (used via LiteLLM alongside GPT-4o), and the database column is defined as **`vector(1536)`** in `counselor_insights_embeddings`.
+[redacted: 196 chars about a private codebase]
 ```
 
 ---
@@ -199,9 +181,7 @@ search({"query": "text-embedding-3-small"})
 
 **Final answer (verbatim):**
 ```
-The semantic search uses OpenAI's **`text-embedding-3-small`** model (configured via `EMBEDDINGS_MODEL_ID` in `python-backend/config.py`, accessed through LiteLLM).
-
-The vector column (`embedding` in the `counselor_insights_embeddings` table) is defined as `vector(1536)`, expecting a **1536-dimensional** vector — which matches the native output size of `text-embedding-3-small`, as confirmed in `python-backend/models/ai_models.py`.
+[redacted: 434 chars about a private codebase]
 ```
 
 ---
@@ -226,7 +206,7 @@ search({"query": "embedding"})
 
 **Final answer (verbatim):**
 ```
-The semantic search uses OpenAI's **text-embedding-3-small** model (used alongside GPT-4o via LiteLLM), and the database column stores it as `vector(1536)` — i.e., a 1536-dimensional embedding, as defined in `database/migrations/create_counselor_insights_embeddings.sql`.
+[redacted: 271 chars about a private codebase]
 ```
 
 ---
@@ -251,7 +231,7 @@ search({"query": "embedding"})
 
 **Final answer (verbatim):**
 ```
-The semantic search uses OpenAI's **text-embedding-3-small** model (used via LiteLLM), and the vector column (`embedding` in `counselor_insights_embeddings`) is defined as `vector(1536)` — i.e., it expects 1536-dimensional embeddings.
+[redacted: 234 chars about a private codebase]
 ```
 
 ---
@@ -277,7 +257,7 @@ search({"query": "vector("})
 
 **Final answer (verbatim):**
 ```
-The semantic search uses OpenAI's **text-embedding-3-small** model (accessed via LiteLLM, alongside GPT-4o for chat/completions), and the database `embedding` columns are defined as **`vector(1536)`** — i.e., they expect 1536-dimensional vectors, matching this model's output size (used consistently across `counselor_insights_embeddings`, `college_embeddings`, and `student_activity_embeddings` tables).
+[redacted: 404 chars about a private codebase]
 ```
 
 ---
@@ -302,7 +282,7 @@ search({"query": "BroadcastChannel"})
 
 **Final answer (verbatim):**
 ```
-The BroadcastChannel used to sync auth across tabs is named **`triptic-auth-sync`**.
+[redacted: 84 chars about a private codebase]
 ```
 
 ---
@@ -327,7 +307,7 @@ search({"query": "BroadcastChannel"})
 
 **Final answer (verbatim):**
 ```
-The BroadcastChannel used to sync auth across tabs is named **`triptic-auth-sync`**.
+[redacted: 84 chars about a private codebase]
 ```
 
 ---
@@ -352,7 +332,7 @@ search({"query": "BroadcastChannel"})
 
 **Final answer (verbatim):**
 ```
-The BroadcastChannel is named **`triptic-auth-sync`**.
+[redacted: 54 chars about a private codebase]
 ```
 
 ---
@@ -377,7 +357,7 @@ search({"query": "BroadcastChannel"})
 
 **Final answer (verbatim):**
 ```
-The BroadcastChannel used to sync auth across tabs is named **`triptic-auth-sync`**.
+[redacted: 84 chars about a private codebase]
 ```
 
 ---
@@ -402,17 +382,7 @@ search({"query": "BroadcastChannel"})
 
 **Final answer (verbatim):**
 ```
-(agent crashed, no final answer — stderr tail:
-am_cls=Stream[RawMessageStreamEvent],
-        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    )
-    ^
-  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/anthropic/_base_client.py", line 1536, in post
-    return cast(ResponseT, self.request(cast_to, opts, stream=stream, stream_cls=stream_cls))
-                           ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/anthropic/_base_client.py", line 1195, in request
-    raise self._make_status_error_from_response(response) from None
-anthropic.OverloadedError: Error code: 529 - {'type': 'error', 'error': {'type': 'overloaded_error', 'message': 'Overloaded'}, 'request_id': 'req_011CdztJqHgjG2ubi9oYBoK7'})
+(agent crashed, no final answer. Error details removed.)
 ```
 
 ---
@@ -437,7 +407,7 @@ search({"query": "BroadcastChannel"})
 
 **Final answer (verbatim):**
 ```
-The BroadcastChannel used to sync auth across tabs is named **`triptic-auth-sync`**.
+[redacted: 84 chars about a private codebase]
 ```
 
 ---
@@ -462,7 +432,7 @@ search({"query": "BroadcastChannel"})
 
 **Final answer (verbatim):**
 ```
-The BroadcastChannel is named **`triptic-auth-sync`**.
+[redacted: 54 chars about a private codebase]
 ```
 
 ---
@@ -487,7 +457,7 @@ search({"query": "BroadcastChannel"})
 
 **Final answer (verbatim):**
 ```
-The BroadcastChannel used to sync auth across tabs is named **`triptic-auth-sync`**.
+[redacted: 84 chars about a private codebase]
 ```
 
 ---
@@ -512,7 +482,7 @@ search({"query": "BroadcastChannel"})
 
 **Final answer (verbatim):**
 ```
-The BroadcastChannel used to sync auth across tabs is named **`triptic-auth-sync`**.
+[redacted: 84 chars about a private codebase]
 ```
 
 ---
@@ -537,7 +507,7 @@ search({"query": "BroadcastChannel"})
 
 **Final answer (verbatim):**
 ```
-The BroadcastChannel is named **`triptic-auth-sync`**.
+[redacted: 54 chars about a private codebase]
 ```
 
 ---

@@ -40,8 +40,8 @@ logged. The cheapest model was also wrong; the most expensive was right.
 
 **Clutter doesn't cause wrong tool calls, but it can cause silence.** Build 03 added
 50 unused tools. Across 19 runs the agent never called a fake one. The single miss
-came from making zero tool calls: it answered from general knowledge and said it had
-no access to the codebase, while holding a search tool.
+came from making zero tool calls: it answered from general knowledge, 4 times out of 4,
+and in 2 of those runs said it had no access to the codebase while holding a search tool.
 
 **Measurement lies too.** Before trusting any number my scoring harness produced, I
 audited the harness itself and found three classes of false positive in my own
