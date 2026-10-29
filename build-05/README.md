@@ -31,8 +31,8 @@ finding here as the temperature-1 data.
   `read_file`, `search`).
 - Question (Q1 from `run_test.py`'s question list): *"Which of these three folders
   is the live backend: server, python-backend, or triptic-backend?"*
-- Target repo: a fixed external codebase (`~/Desktop/Cursor - LP`, not part of this
-  repo).
+- Target repo: Triptic's private codebase, the working repo itself (builds moved to
+  copies from Build 07 on). Fixed across all runs.
 - 20 runs at API-default temperature (`TEMP` unset). A second batch of 20 runs was
   attempted at `TEMP=0` and is not part of the results below — see **The mistake**.
 
@@ -295,7 +295,8 @@ automatically.
 | `temp_probe.py` | Probes `claude-sonnet-5` across a range of `temperature`/`top_p` values (and no-temperature-at-all) to see which are accepted. |
 | `temp_probe2.py` | Probes `top_k` on `claude-sonnet-5` and `temperature=0.0` on five older Claude models, to check whether the rejection is specific to this model generation. |
 | `check_search.py` | Checks how many hits `search()` returns for a few queries against the target repo and whether the 40-hit cap was reached. |
-| `RESULTS_20_RUNS_DEFAULT.md` | The 20 real runs at API-default temperature: per-run tool-call count, tool sequence, and final answer. |
+| `RESULTS_20_RUNS_DEFAULT.md` | The 20 real runs at API-default temperature: per-run tool-call count, tool sequence, and which folder each run named. The answer text is replaced by its length (it describes a private codebase); `make_public_results.py` writes this file from the private original. |
+| `make_public_results.py` | Writes the public `RESULTS_20_RUNS_DEFAULT.md` from the original in `runs_private/` (gitignored). |
 | `PROBE_OUTPUT.txt` | Raw output of `temp_probe.py` — source for the first deprecation table above. |
 | `PROBE_OUTPUT_MODELS.txt` | Raw output of `temp_probe2.py` — source for the second deprecation table above. |
 | `assets/` | `build5_p45.png`/`.gif` (4:5, embedded above) and `build5_sq.png`/`.gif` (1:1, platform variant, not embedded). |

@@ -4,15 +4,19 @@ make_public_traces.py
 
 Reads every traces/*.jsonl and writes a scrubbed copy into traces_public/,
 same filename with a .public.json extension. Keeps only what's needed to
-verify the boundary-violation, hallucinated-file, and refusal claims: tool
-names, the arguments passed to them, and the final answer. Strips every
-output_preview field (and anything else carrying file contents) completely.
+verify the boundary-violation and hallucinated-file claims: tool
+names, the arguments passed to them, the file names the final answer
+mentions. The answer text itself is
+replaced by its length, and every output_preview field (and anything else
+carrying file contents) is dropped completely.
 
 Usage:
     python3 make_public_traces.py
 """
 
-import glob, json, os
+import glob, json, os, re
+
+PATH_RE = re.compile(r"[A-Za-z0-9_./-]+\.[A-Za-z0-9_]{1,10}")   # same pattern as score_runs.py
 
 TRACE_DIR = "traces"
 PUBLIC_DIR = "traces_public"
@@ -58,10 +62,16 @@ def scrub(path):
     final_answer_lines = [l["data"] for l in lines if l.get("kind") == "final_answer"]
     final_answer = final_answer_lines[-1] if final_answer_lines else None
 
+    # The answer text describes the private codebase, so it is not published.
+    # What the claims need is kept: its length, the file names it mentions
+    # (for the hallucinated-file check).
+    answer = final_answer or ""
+    files_named = sorted({m for m in PATH_RE.findall(answer) if "/" in m or m.endswith((".py", ".md", ".ts", ".tsx", ".js", ".json", ".sql", ".toml", ".txt", ".yaml", ".yml", ".sh"))})
     return {
         "model": model,
         "steps": steps,
-        "final_answer": final_answer,
+        "final_answer": f"[redacted: {len(answer)} chars about a private codebase]" if answer else None,
+        "files_named_in_answer": files_named,
         "counts": {
             "tool_calls": len(steps),
             "read_file_calls": n_read_file,

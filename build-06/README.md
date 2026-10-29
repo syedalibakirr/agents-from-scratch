@@ -135,12 +135,13 @@ headline:
 
 Raw traces (`traces/*.jsonl`) stay gitignored: they contain file contents from
 the target repo, which is private. `traces_public/` holds the same 43 runs with
-tool routes and final answers kept, and all file contents stripped —
-`make_public_traces.py` does that conversion. It reads every `traces/*.jsonl`
-and writes a matching `traces_public/*.public.json` containing only: the model,
-an ordered list of {tool name, input arguments} steps, the final answer text, and
-tool-call counts. Every `output_preview` field (and anything else carrying file
-contents) is dropped completely.
+tool routes kept and all file contents stripped. `make_public_traces.py` does
+that conversion. It reads every `traces/*.jsonl` and writes a matching
+`traces_public/*.public.json` containing only: the model, an ordered list of
+{tool name, input arguments} steps, tool-call counts, the length of the final
+answer, and the file names the answer mentions (enough to check the
+hallucinated-file count). The answer text itself describes the private codebase,
+so it is replaced by its length. Every `output_preview` field is dropped.
 
 ## How to reproduce
 
@@ -177,7 +178,7 @@ python make_public_traces.py
 | `agent.py` | The agent loop. Adds `log("config", {"model": MODEL})` as the first line written to every trace, and reads `TRACE` from the environment so each run writes its own file instead of overwriting `traces.jsonl`. |
 | `run_test.py` | Runs `agent.py` once for a given question/condition, names the trace file after the model, and reports crashes and zero-tool-call runs loudly instead of silently. |
 | `score_runs.py` | Reads every `traces/*.jsonl`, groups by model, and reports tool-call stats, boundary violations, refusals, zero-tool runs, and hallucinated files. Standard library only; supports `--json`. |
-| `make_public_traces.py` | Converts every `traces/*.jsonl` into a scrubbed `traces_public/*.public.json` — tool routes and final answers only, no file contents. |
+| `make_public_traces.py` | Converts every `traces/*.jsonl` into a scrubbed `traces_public/*.public.json`: tool routes, counts, and the file names each answer mentions. No file contents, no answer text. |
 | `RESULTS_OPUS5_CLAIMS.txt` | Raw output of `score_runs.py` — source for every number in this README. |
 | `traces/` | Raw per-run traces, gitignored (contain target-repo file contents). |
 | `traces_public/` | Scrubbed per-run traces, safe to publish. |

@@ -66,7 +66,11 @@
       }
     }
   ],
-  "final_answer": "## What the backend does\n\n`python-backend/` is a **FastAPI microservice that provides the AI/ML features** for the UniVerse college-admissions platform. Its own README describes it as the \"AI Essay Coach Backend,\" but the route table shows the scope has grown well beyond essays.\n\n**Core capabilities** (from `api/routes.py`, `config.py`, `services/`, `college_recommender/`):\n\n- **Essay coaching** \u2014 `POST /api/essay/analyze` and `POST /api/essay/upload` (accepts `.txt`/`.docx`). Uses a fine-tuned GPT-3.5 model (`ft:gpt-3.5-turbo-0125:pal-ai::CXCkJfDi`) for full analysis, plus `gpt-4o-mini` for conversational follow-ups, in-text selection questions, and rule-based intent classification that routes between \"full analysis\" and \"Q&A\" modes. Conversation history is auto-pruned to stay within context limits.\n- **College recommendations** \u2014 `POST /api/colleges/recommend` and `/api/colleges/recalculate-acceptance`, backed by a `college_recommender` package (data loading, scoring, pipeline) that pulls college data from Supabase.\n- **Extracurricular activity tools** \u2014 `/api/activity/polish`, `/api/activity/analyze`, `/api/activity/rank`.\n- **Research chatbot** \u2014 `/api/research/ask` plus counselor chat history endpoints (`GET`/`DELETE /api/counselor/research/...`). Notably, this one goes through **LiteLLM** (`RESEARCH_CHAT_MODEL_ID`, default `openai/gpt-4o`), so the provider can be swapped via env var.\n- **Student context & RAG** \u2014 `/api/student/context`, `/api/student/counselor-insights`, and embedding-refresh endpoints for essays and activities. Embeddings are 1536-dim to match the `vector(1536)` columns in the `college_embeddings` and `student_activity_embeddings` tables.\n- **Dashboard summaries** \u2014 `/api/dashboard/summary` and a refresh variant.\n- Plus `GET /api/health` and a",
+  "final_answer": "[redacted: 1797 chars about a private codebase]",
+  "files_named_in_answer": [
+    "api/routes.py",
+    "config.py"
+  ],
   "counts": {
     "tool_calls": 11,
     "read_file_calls": 5,

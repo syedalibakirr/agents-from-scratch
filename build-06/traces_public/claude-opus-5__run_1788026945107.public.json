@@ -84,7 +84,27 @@
       }
     }
   ],
-  "final_answer": "I looked only at files inside `python-backend/`. Here's what I found.\n\n## What this backend does\n\n`python-backend/` is a **FastAPI microservice that provides the AI/ML features for a college-application platform (\"UniVerse\")**. Its own README describes it as the \"AI Essay Coach Backend (Python Microservice)\", sitting alongside a React client and a Node/Express server, and talking to OpenAI/Anthropic plus Supabase.\n\n**Core capabilities** (from `app.py`, `api/routes.py`, `services/`, `college_recommender/`):\n\n- **Essay coaching** \u2014 the original purpose. `services/conversation.py` (`ConversationManager`) orchestrates a workflow that classifies user intent (`intent_classifier.py`) and routes either to a full essay review via a fine-tuned GPT-3.5 model (`essay_analyzer.py`, model `ft:gpt-3.5-turbo-0125:pal-ai::CXCkJfDi` in `config.py`) or to conversational Q&A via `gpt-4o-mini` (`chatbot.py`). Supports in-text selection questions, conversation summarization/history pruning (`utils/summarizer.py`, `utils/token_counter.py`), and `.txt`/`.docx` file upload (`utils/file_reader.py`). Endpoints: `/api/essay/analyze`, `/api/essay/upload`, `/api/essay/compare-drafts`.\n- **College recommendation** \u2014 the `college_recommender/` package (`pipeline.py`, `scoring.py`, `data_loading.py`) applies hard filters, preference scoring, and academic-fit scoring with pandas/numpy/scikit-learn, then buckets results into safe/target/ambitious. It can also pull pre-computed acceptance chances from Supabase. Endpoints: `/api/colleges/recommend`, `/api/colleges/recalculate-acceptance`.\n- **Extracurricular activity tools** \u2014 polishing descriptions, heatmap/gap analysis, and prioritization (`services/activity_polisher.py`, `activity_analyzer.py`, `activity_ranking.py`). Endpoints: `/api/activity/polish`, `/activity/analyze`, `/activity/rank`.\n- **Research chatbot + RAG** \u2014 `services/research_chatbot.py` answers general admissions questions (college fit, financial aid, testing, deadlines, recommendations, interviews) while explicitly deferring line-level essay feedback to the Essay Assistant. It uses LiteLLM so the model/provider is swappable via `RESEARCH_CHAT_MODEL_ID`. `services/embedding_pipeline.py` plus the `/api/student/refresh-*-embeddings` routes maintain 1536-dim vector embeddings (college, activity, counselor-insight) in Supabase.\n- **Dashboard, counselor and marketplace helpers** \u2014 `/api/dashboard/summary`, `/api/counselor/chat/detect-meeting-intent`, `/api/student/context`, and `/",
+  "final_answer": "[redacted: 2501 chars about a private codebase]",
+  "files_named_in_answer": [
+    "activity_analyzer.py",
+    "activity_ranking.py",
+    "api/routes.py",
+    "app.py",
+    "chatbot.py",
+    "config.py",
+    "data_loading.py",
+    "essay_analyzer.py",
+    "intent_classifier.py",
+    "pipeline.py",
+    "scoring.py",
+    "services/activity_polisher.py",
+    "services/conversation.py",
+    "services/embedding_pipeline.py",
+    "services/research_chatbot.py",
+    "utils/file_reader.py",
+    "utils/summarizer.py",
+    "utils/token_counter.py"
+  ],
   "counts": {
     "tool_calls": 14,
     "read_file_calls": 9,

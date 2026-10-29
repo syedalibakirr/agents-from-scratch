@@ -1,4 +1,4 @@
-target repo: /Users/syedalibakir/Desktop/Cursor - LP — 778 files found
+target repo: private codebase (Triptic), 778 files found
 
 === claude-opus-5 ===
   runs: 20
